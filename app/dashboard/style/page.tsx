@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { ProductMatchCard, Product } from "@/components/ProductMatchCard";
 import { Loader2, Sparkles, Send, Save, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -32,6 +32,14 @@ const OCCASIONS = [
 ];
 
 export default function StylePage() {
+  return (
+    <Suspense fallback={<div className="flex-1 w-full flex items-center justify-center h-screen bg-bg"><Loader2 className="w-6 h-6 text-p animate-spin" /></div>}>
+      <StylePageInner />
+    </Suspense>
+  );
+}
+
+function StylePageInner() {
   const searchParams = useSearchParams();
   const [occasion, setOccasion] = useState("");
   const [loading, setLoading] = useState(false);
