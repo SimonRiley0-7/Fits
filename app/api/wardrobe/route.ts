@@ -43,13 +43,23 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "item_id is required" }, { status: 400 });
     }
 
-    const { error } = await supabaseAdmin
+    // First, delete any associated purchases to satisfy foreign key constraints
+    const { error: purchaseError } = await supabaseAdmin
+      .from("purchases")
+      .delete()
+      .eq("wardrobe_item_id", item_id)
+      .eq("user_id", userId);
+
+    if (purchaseError) throw purchaseError;
+
+    // Then, delete the wardrobe item itself
+    const { error: wardrobeError } = await supabaseAdmin
       .from("wardrobe_items")
       .delete()
       .eq("id", item_id)
       .eq("user_id", userId);
 
-    if (error) throw error;
+    if (wardrobeError) throw wardrobeError;
     
     return NextResponse.json({ success: true });
   } catch (error: any) {

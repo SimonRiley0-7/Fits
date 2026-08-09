@@ -46,13 +46,31 @@ export async function POST(req: Request) {
     }
 
     // 1. Insert into wardrobe_items FIRST to generate IDs
-    const wardrobeData = items.map((item: any) => ({
-      user_id: user,
-      image_url: item.product.imageUrl,
-      category: item.analysis?.category || "accessory",
-      color: item.analysis?.color || "unknown",
-      brand: item.product.retailer // mapping retailer to brand
-    }));
+    const wardrobeData = items.map((item: any) => {
+      let parsedBrand = item.product.retailer || "Unknown";
+      if (parsedBrand.toLowerCase().includes("myntra")) parsedBrand = "Myntra";
+      if (parsedBrand.toLowerCase().includes("ajio")) parsedBrand = "Ajio";
+
+      let parsedCategory = item.analysis?.category;
+      if (!parsedCategory && item.product.title) {
+        const t = item.product.title.toLowerCase();
+        if (t.includes("shirt")) parsedCategory = "Shirt";
+        else if (t.includes("jeans") || t.includes("pants") || t.includes("trouser")) parsedCategory = "Pants";
+        else if (t.includes("dress")) parsedCategory = "Dress";
+        else if (t.includes("jacket") || t.includes("coat")) parsedCategory = "Jacket";
+        else if (t.includes("belt")) parsedCategory = "Belt";
+        else if (t.includes("shoe") || t.includes("sneaker")) parsedCategory = "Shoes";
+        else parsedCategory = "Apparel";
+      }
+
+      return {
+        user_id: user,
+        image_url: item.product.imageUrl,
+        category: parsedCategory || "Apparel",
+        color: item.analysis?.color || "Standard",
+        brand: parsedBrand
+      };
+    });
 
     // Perform insert and select the rows back to get their UUIDs
     const { data: insertedWardrobeItems, error: wardrobeError } = await supabaseAdmin

@@ -47,21 +47,22 @@ export function WardrobeClient({ initialItems }: { initialItems: any[] }) {
           transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
           className="flex flex-col items-center justify-center h-[60vh] text-center"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-32 h-32 text-border mb-8">
-            <path d="M12 2v20M6 10l6-8 6 8M6 10v12M18 10v12" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <h2 className="font-display text-4xl mb-4">Your closet is waiting</h2>
-          <p className="t-body text-tx-muted mb-8 max-w-sm">Grab your first piece or add what you already own.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard/grab" className="btn-primary rounded-none">
-              Grab something
+          <div className="w-20 h-20 rounded-full bg-p/10 flex items-center justify-center border border-p/20 mb-8">
+             <Sparkles className="w-8 h-8 text-p opacity-80" />
+          </div>
+          <h2 className="font-black text-4xl uppercase tracking-tighter mb-4 text-tx">Your closet is waiting</h2>
+          <p className="text-tx-muted mb-8 max-w-sm uppercase tracking-widest text-[10px] font-bold leading-relaxed">Grab your first piece or add what you already own.</p>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <Link href="/dashboard/grab" className="group relative bg-bg-surface text-tx px-10 py-4 font-bold text-xs tracking-widest uppercase border border-border hover:border-p/50 transition-all">
+              <div className="absolute inset-0 bg-p/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span>GRAB SOMETHING</span>
             </Link>
             <button 
               onClick={() => setIsAddModalOpen(true)}
-              className="flex items-center gap-2 bg-p text-white px-5 py-2.5 rounded-none text-sm font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 active:translate-y-0"
+              className="flex items-center gap-2 bg-p text-white px-10 py-4 text-xs tracking-widest uppercase font-bold hover:bg-p-h transition-colors border border-p"
             >
               <Plus className="w-4 h-4" />
-              Add Piece
+              ADD PIECE
             </button>
           </div>
         </motion.div>
@@ -82,9 +83,9 @@ export function WardrobeClient({ initialItems }: { initialItems: any[] }) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {/* Filters with Layout Animation and Add Button */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,17 +95,10 @@ export function WardrobeClient({ initialItems }: { initialItems: any[] }) {
             <button
               key={f}
               onClick={() => setActiveFilter(f)}
-              className={`relative px-5 py-2 text-xs font-bold uppercase tracking-widest rounded-full transition-colors ${
-                activeFilter === f ? 'text-bg' : 'text-tx-muted hover:text-tx'
+              className={`relative px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-colors border ${
+                activeFilter === f ? 'text-p border-p bg-p/5' : 'text-tx-muted border-border hover:border-tx/30 bg-bg-surface hover:text-tx'
               }`}
             >
-              {activeFilter === f && (
-                <motion.div
-                  layoutId="activeFilterIndicator"
-                  className="absolute inset-0 bg-tx rounded-full"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
               <span className="relative z-10">{f}</span>
             </button>
           ))}
@@ -114,78 +108,65 @@ export function WardrobeClient({ initialItems }: { initialItems: any[] }) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center gap-2 bg-p text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 active:translate-y-0"
+          className="flex items-center gap-3 bg-p text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest border border-p hover:bg-p-h transition-colors shadow-[0_0_20px_rgba(212,121,58,0.2)]"
         >
           <Plus className="w-4 h-4" />
-          Add Piece
+          ADD PIECE
         </motion.button>
       </div>
 
       {/* Grid with Layout and AnimatePresence */}
       <motion.div 
         layout
-        className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
         <AnimatePresence mode="popLayout">
           {filteredItems.map((item: any, i: number) => (
             <motion.div 
               layout
               key={item.id}
-              initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+              initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)", transition: { duration: 0.2 } }}
+              exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)", transition: { duration: 0.2 } }}
               transition={{ 
                 type: "spring", 
                 bounce: 0.3,
                 duration: 0.6,
                 delay: i * 0.05 
               }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="relative group break-inside-avoid bg-bg-surface rounded-lg overflow-hidden flex flex-col cursor-pointer"
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+              className="relative group aspect-[3/4] bg-bg-surface overflow-hidden flex flex-col cursor-pointer border border-border shadow-xl"
             >
               {/* Image */}
-              <div className="w-full bg-bg relative">
+              <div className="absolute inset-0 w-full h-full bg-bg">
                 <img 
                   src={item.image_url} 
                   alt={item.category || "Clothing item"} 
-                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 
-                {/* Amber border overlay (hover state) */}
-                <div className="absolute inset-0 border border-tx/10 opacity-0 group-hover:opacity-100 group-hover:border-tx/30 transition-all duration-300 pointer-events-none z-10 rounded-lg" />
+                {/* Gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-bg/90 via-transparent to-transparent opacity-80" />
                 
-                {/* Hover Actions */}
+                {/* GenZ Tech UI overlay on cards */}
+                <div className="absolute bottom-3 left-3 right-3 p-3 bg-bg/90 backdrop-blur-xl border border-border flex flex-col gap-1 transition-transform duration-300 transform group-hover:-translate-y-1">
+                   <div className="text-p text-[10px] uppercase tracking-widest mb-1 line-clamp-1">{item.brand ? `${item.brand} ` : ''}{item.category}</div>
+                   <div className="text-tx text-[10px] tracking-wider uppercase">{item.color || 'STANDARD'}</div>
+                </div>
+                
+                {/* Hover Actions (Top Right) */}
                 <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 z-20">
                   <Link 
-                    href={`/dashboard/style?item=${encodeURIComponent(item.category || 'item')}`} 
+                    href={`/dashboard/style?item_id=${item.id}&item_name=${encodeURIComponent(item.category || 'item')}`} 
                     title="Complete this outfit"
-                    className="w-8 h-8 rounded-full bg-bg/80 backdrop-blur-md border border-border flex items-center justify-center text-tx hover:text-p hover:border-p shadow-xl transition-colors"
+                    className="w-10 h-10 bg-bg/90 backdrop-blur-md border border-border flex items-center justify-center text-tx hover:text-p hover:border-p shadow-xl transition-colors"
                   >
                     <Wand2 className="w-4 h-4" />
                   </Link>
-                  <button onClick={(e) => { e.preventDefault(); handleDelete(item.id); }} className="w-8 h-8 rounded-full bg-bg/80 backdrop-blur-md border border-border flex items-center justify-center text-tx hover:text-red-500 hover:border-red-500 shadow-xl transition-colors">
+                  <button onClick={(e) => { e.preventDefault(); handleDelete(item.id); }} className="w-10 h-10 bg-bg/90 backdrop-blur-md border border-border flex items-center justify-center text-tx hover:text-red-500 hover:border-red-500 shadow-xl transition-colors">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
-              </div>
-
-              {/* Content Bottom */}
-              <div className="p-4 flex flex-col gap-2 bg-gradient-to-b from-transparent to-bg-surface/50">
-                <p className="font-body font-medium text-tx capitalize line-clamp-1">
-                  {item.brand ? `${item.brand} ` : ''}{item.color} {item.category}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-widest bg-tx/5 text-tx-muted px-2 py-1 rounded-full">
-                    {item.category}
-                  </span>
-                </div>
-                {/* One-Click Complete This Outfit */}
-                <Link
-                  href={`/dashboard/style?item=${encodeURIComponent(item.category || 'item')}`}
-                  className="mt-1 w-full flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-p border border-p/30 hover:border-p hover:bg-p/5 rounded-lg py-2 transition-all opacity-0 group-hover:opacity-100"
-                >
-                  <Sparkles className="w-3 h-3" /> Complete this outfit
-                </Link>
               </div>
             </motion.div>
           ))}
@@ -309,47 +290,55 @@ function AddItemModal({ onClose, onAdd }: { onClose: () => void, onAdd: (item: a
       <motion.div 
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-bg/90 backdrop-blur-xl"
       />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-lg bg-bg-surface border border-border shadow-2xl rounded-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-lg bg-bg-surface/80 backdrop-blur-3xl border border-border shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
       >
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <h2 className="font-display text-2xl font-bold">Add to Wardrobe</h2>
-          <button onClick={onClose} className="p-2 bg-bg hover:bg-border rounded-full transition-colors"><X className="w-5 h-5" /></button>
+        <div className="flex items-center justify-between p-6 border-b border-border bg-bg/50">
+          <div className="flex items-center gap-3">
+             <div className="w-8 h-8 flex items-center justify-center border border-p/30 bg-p/10">
+               <UploadCloud className="w-4 h-4 text-p" />
+             </div>
+             <h2 className="font-black text-xl uppercase tracking-tighter text-tx">Add to Wardrobe</h2>
+          </div>
+          <button onClick={onClose} className="p-2 bg-bg hover:border-p border border-transparent transition-colors"><X className="w-5 h-5 text-tx" /></button>
         </div>
 
         <div className="p-6 overflow-y-auto flex-1 space-y-6">
           
           {/* Image Upload Area */}
           {!preview ? (
-            <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-border hover:border-p rounded-xl cursor-pointer bg-bg transition-colors group">
-              <UploadCloud className="w-10 h-10 text-tx-muted group-hover:text-p mb-4 transition-colors" />
-              <span className="font-medium">Click to upload photo</span>
-              <span className="text-xs text-tx-muted mt-1">JPEG, PNG, WEBP</span>
+            <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-border hover:border-p cursor-pointer bg-bg transition-colors group">
+              <UploadCloud className="w-8 h-8 text-tx-muted group-hover:text-p mb-4 transition-colors" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-tx">Click to upload photo</span>
+              <span className="text-[9px] uppercase tracking-[0.2em] text-tx-muted mt-2">JPEG, PNG, WEBP</span>
               <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
             </label>
           ) : (
-            <div className="relative w-full h-64 rounded-xl overflow-hidden bg-bg border border-border group">
+            <div className="relative w-full h-64 overflow-hidden bg-bg border border-border group">
               <img src={preview} alt="Preview" className="w-full h-full object-contain" />
               
               {/* Analyzing Overlay */}
               {isAnalyzing && (
-                <div className="absolute inset-0 bg-bg/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
-                  <Loader2 className="w-8 h-8 text-p animate-spin" />
-                  <span className="font-bold text-p animate-pulse">Iris is analyzing...</span>
+                <div className="absolute inset-0 bg-bg/90 backdrop-blur-md flex flex-col items-center justify-center gap-4">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-p/20 blur-xl rounded-full" />
+                    <Sparkles className="w-8 h-8 text-p animate-pulse relative z-10" />
+                  </div>
+                  <span className="font-bold text-[10px] tracking-[0.2em] uppercase text-p animate-pulse">Iris Vision Active</span>
                 </div>
               )}
 
               {/* Hover Change Photo */}
               {!isAnalyzing && (
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <label className="bg-bg text-tx px-4 py-2 rounded-full text-sm font-medium cursor-pointer hover:bg-p hover:text-white transition-colors">
-                    Change Photo
+                <div className="absolute inset-0 bg-bg/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <label className="bg-p text-white px-6 py-3 border border-p text-[10px] tracking-widest uppercase font-bold cursor-pointer hover:bg-p-h transition-colors">
+                    CHANGE PHOTO
                     <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
@@ -358,30 +347,30 @@ function AddItemModal({ onClose, onAdd }: { onClose: () => void, onAdd: (item: a
           )}
 
           {/* Form Fields */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest text-tx-muted mb-2">Category *</label>
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-p mb-3">Category *</label>
               <input 
                 type="text" placeholder="e.g. Jacket, Sneakers, T-Shirt"
                 value={category} onChange={e => setCategory(e.target.value)}
-                className="w-full bg-bg border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-p transition-colors"
+                className="w-full bg-bg border border-border px-5 py-4 text-sm focus:outline-none focus:border-p transition-colors text-tx placeholder:text-tx-muted/50"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest text-tx-muted mb-2">Color</label>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-tx-muted mb-3">Color</label>
                 <input 
                   type="text" placeholder="e.g. Navy Blue"
                   value={color} onChange={e => setColor(e.target.value)}
-                  className="w-full bg-bg border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-p transition-colors"
+                  className="w-full bg-bg border border-border px-5 py-4 text-sm focus:outline-none focus:border-p transition-colors text-tx placeholder:text-tx-muted/50"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest text-tx-muted mb-2">Brand</label>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-tx-muted mb-3">Brand</label>
                 <input 
                   type="text" placeholder="e.g. Zara"
                   value={brand} onChange={e => setBrand(e.target.value)}
-                  className="w-full bg-bg border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-p transition-colors"
+                  className="w-full bg-bg border border-border px-5 py-4 text-sm focus:outline-none focus:border-p transition-colors text-tx placeholder:text-tx-muted/50"
                 />
               </div>
             </div>
@@ -389,15 +378,15 @@ function AddItemModal({ onClose, onAdd }: { onClose: () => void, onAdd: (item: a
 
         </div>
 
-        <div className="p-6 border-t border-border bg-bg flex justify-end gap-3">
-          <button onClick={onClose} className="px-6 py-3 font-medium hover:bg-bg-surface rounded-xl transition-colors">Cancel</button>
+        <div className="p-6 border-t border-border bg-bg/50 flex justify-end gap-4">
+          <button onClick={onClose} className="px-6 py-4 text-[10px] tracking-widest uppercase font-bold text-tx-muted hover:text-tx transition-colors">Cancel</button>
           <button 
             onClick={handleSave}
             disabled={isUploading || isSaving || !file || !category}
-            className="btn-primary flex items-center justify-center gap-2 disabled:opacity-50 min-w-[120px]"
+            className="flex items-center justify-center gap-3 bg-p text-white px-8 py-4 text-[10px] tracking-widest uppercase font-bold border border-p hover:bg-p-h disabled:opacity-50 disabled:hover:bg-p transition-colors min-w-[140px]"
           >
-            {(isUploading || isSaving) && <Loader2 className="w-4 h-4 animate-spin" />}
-            {isUploading ? "Uploading..." : isSaving ? "Saving..." : "Add Item"}
+            {(isUploading || isSaving) && <Loader2 className="w-3 h-3 animate-spin" />}
+            {isUploading ? "UPLOADING..." : isSaving ? "SAVING..." : "ADD ITEM"}
           </button>
         </div>
       </motion.div>

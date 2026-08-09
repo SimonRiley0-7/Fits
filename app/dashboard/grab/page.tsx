@@ -18,7 +18,7 @@ export default function GrabPage() {
   
   const addToCart = useCart(state => state.addToCart);
 
-  const handleAnalysisComplete = async (data: any, imageUrl: string) => {
+  const handleAnalysisComplete = async (data: any, imageUrl: string, budget?: string) => {
     setAnalyzedData(data);
     setAnalyzedImage(imageUrl);
     setMatchedProducts({});
@@ -31,7 +31,7 @@ export default function GrabPage() {
         const res = await fetch("/api/find-product", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(item)
+          body: JSON.stringify({ ...item, budget })
         });
         const result = await res.json();
         if (result.matches) {
@@ -64,13 +64,13 @@ export default function GrabPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-p/5 blur-[120px] rounded-full pointer-events-none" />
           
           <div className="relative z-10 w-full max-w-3xl flex flex-col items-center text-center mb-12">
-            <h1 className="t-h1 mb-4">See it. Grab it.</h1>
-            <p className="t-body max-w-md mx-auto">
+            <h1 className="font-black text-6xl md:text-7xl uppercase tracking-tighter text-tx mb-4">See it. Grab it.</h1>
+            <p className="text-tx-muted uppercase tracking-widest text-[10px] font-bold max-w-md mx-auto">
               Drop any screenshot or photo. Iris will identify every piece and find the exact matches from Indian retailers.
             </p>
           </div>
           
-          <div className="relative z-10 w-full max-w-2xl bg-bg-surface border-2 border-dashed border-border rounded-2xl p-4 lg:p-8 shadow-2xl">
+          <div className="relative z-10 w-full max-w-2xl bg-bg-surface/80 backdrop-blur-3xl border border-border p-4 lg:p-8 shadow-2xl">
             <UploadBox onAnalysisComplete={handleAnalysisComplete} />
           </div>
         </div>
@@ -91,12 +91,12 @@ export default function GrabPage() {
                   </button>
                 )}
                 <div>
-                  <h2 className="font-display text-2xl font-medium tracking-tight text-tx flex items-center gap-2">
-                    {findingMatches ? "Analyzing Image" : "Matches Found"}
+                  <h2 className="font-black text-2xl tracking-tighter uppercase text-tx flex items-center gap-2">
+                    {findingMatches ? "ANALYZING IMAGE" : "MATCHES FOUND"}
                     {findingMatches && <Sparkles className="w-4 h-4 text-p animate-pulse" />}
                   </h2>
-                  <p className="text-[10px] uppercase font-bold tracking-widest text-tx-muted mt-1">
-                    {findingMatches ? "Scanning Retailers..." : `${analyzedData?.items?.length || 0} items detected`}
+                  <p className="text-[9px] uppercase font-bold tracking-[0.2em] text-tx-muted mt-1">
+                    {findingMatches ? "SCANNING RETAILERS..." : `${analyzedData?.items?.length || 0} ITEMS DETECTED`}
                   </p>
                 </div>
               </div>
@@ -121,8 +121,8 @@ export default function GrabPage() {
                     <Scan className="w-8 h-8 text-white animate-pulse" />
                   </div>
                 </div>
-                <h3 className="font-display italic text-3xl text-tx mb-3">Matching items...</h3>
-                <p className="t-body max-w-md text-center">
+                <h3 className="font-black text-3xl uppercase tracking-tighter text-tx mb-3">Matching items...</h3>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-tx-muted max-w-md text-center leading-relaxed">
                   Iris is scanning through Myntra, Ajio, and Amazon to find exact matches for the items in your image.
                 </p>
               </div>
@@ -135,26 +135,26 @@ export default function GrabPage() {
                     {/* Section Header */}
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border pb-4">
                       <div>
-                        <h3 className="font-display text-3xl font-medium text-tx mb-2 capitalize">
+                        <h3 className="font-black tracking-tighter text-3xl text-tx mb-2 uppercase">
                           {item.category}
                         </h3>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-bg-surface border border-border text-tx-muted text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full">
+                          <span className="bg-bg border border-border text-tx-muted text-[9px] uppercase font-bold tracking-[0.2em] px-2 py-1">
                             {item.color}
                           </span>
-                          <span className="bg-bg-surface border border-border text-tx-muted text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-full">
+                          <span className="bg-bg border border-border text-tx-muted text-[9px] uppercase font-bold tracking-[0.2em] px-2 py-1">
                             {item.style}
                           </span>
                           {item.distinctive_feature && (
-                            <span className="text-tx-muted text-[10px] uppercase font-bold tracking-wider flex items-center gap-2 ml-2">
+                            <span className="text-p text-[9px] uppercase font-bold tracking-[0.2em] flex items-center gap-2 ml-2">
                               <ArrowRight className="w-3 h-3 text-p" /> {item.distinctive_feature}
                             </span>
                           )}
                         </div>
                       </div>
                       
-                      <div className="text-[10px] uppercase font-bold tracking-widest text-tx-muted">
-                        {matchedProducts[item.category]?.length || 0} Matches
+                      <div className="text-[9px] uppercase font-bold tracking-[0.3em] text-tx-muted">
+                        {matchedProducts[item.category]?.length || 0} MATCHES
                       </div>
                     </div>
                     

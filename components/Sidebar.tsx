@@ -26,8 +26,8 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-bg-surface border-b border-border z-40 flex items-center justify-between px-4">
-        <span className="font-display font-bold text-xl tracking-tight text-tx">Fits.</span>
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-bg/90 backdrop-blur-2xl border-b border-border z-40 flex items-center justify-between px-4">
+        <span className="font-display font-black text-xl tracking-tighter uppercase text-tx">FITS.</span>
         <div className="flex items-center gap-2">
           <CartDrawer />
           <button onClick={() => setIsOpen(!isOpen)} className="text-tx">
@@ -46,13 +46,13 @@ export function Sidebar() {
 
       {/* Sidebar Content */}
       <aside className={`
-        fixed top-0 left-0 bottom-0 w-[240px] bg-bg-surface border-r border-border z-50 flex flex-col transition-transform duration-300
+        fixed top-0 left-0 bottom-0 w-[280px] bg-bg-surface/90 backdrop-blur-3xl border-r border-border z-50 flex flex-col transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
       `}>
         {/* Header */}
-        <div className="h-24 flex justify-between items-center px-6 border-b border-border/50">
-          <Link href="/dashboard" onClick={closeSidebar} className="font-display font-bold text-3xl tracking-tight text-tx hover:opacity-80 transition-opacity flex items-center gap-2">
-            Fits.
+        <div className="h-24 flex justify-between items-center px-8 border-b border-border">
+          <Link href="/dashboard" onClick={closeSidebar} className="font-display font-black text-3xl tracking-tighter uppercase text-tx hover:opacity-80 transition-opacity flex items-center gap-2">
+            FITS.
           </Link>
           <div className="flex items-center gap-1">
             <ThemeToggle />
@@ -71,27 +71,27 @@ export function Sidebar() {
                 href={link.href}
                 onClick={closeSidebar}
                 className={`
-                  px-8 py-3 text-sm font-medium transition-all flex items-center gap-3
+                  px-8 py-4 transition-all flex items-center gap-4
                   ${isActive 
-                    ? "border-l-2 border-p bg-tx/5 text-tx" 
+                    ? "border-l-2 border-p bg-p/10 text-p" 
                     : "border-l-2 border-transparent text-tx-muted hover:text-tx hover:bg-tx/5"
                   }
                 `}
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-p' : ''}`} />
-                {link.name}
+                <span className="uppercase tracking-widest text-[10px] font-bold">{link.name}</span>
               </Link>
             );
           })}
         </nav>
 
         {/* Footer */}
-        <div className="p-6 border-t border-border flex flex-col gap-4">
+        <div className="p-6 border-t border-border flex flex-col gap-4 bg-bg/50">
           <div className="flex items-center gap-3">
-            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 rounded-none border border-border" } }} />
+            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 rounded-xl border border-border" } }} />
             <div className="flex flex-col">
-              <span className="font-body font-medium text-sm text-tx leading-none">My Account</span>
-              <span className="text-[10px] text-tx-muted mt-1 uppercase tracking-widest font-bold">14 pieces</span>
+              <span className="font-body font-bold text-xs uppercase tracking-widest text-tx leading-none">Account</span>
+              <span className="text-[10px] text-p mt-1 uppercase tracking-widest font-bold">Online</span>
             </div>
           </div>
         </div>

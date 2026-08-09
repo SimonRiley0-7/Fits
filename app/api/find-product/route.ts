@@ -2,9 +2,35 @@ import { NextResponse } from "next/server";
 import { getOrCreateUser } from "@/lib/getUser";
 import { supabaseAdmin } from "@/lib/supabase";
 
+function extractCleanUrl(url: string, source: string, title: string) {
+  if (!url) return "";
+  if (url.includes('google.com/url')) {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.searchParams.get('url') || urlObj.searchParams.get('q') || url;
+    } catch (e) {}
+  }
+  
+  if (url.includes('google.com/search?ibp=oshop') || url.includes('google.com/shopping/product')) {
+    const s = source.toLowerCase();
+    const q = encodeURIComponent(title);
+    if (s.includes('myntra')) return `https://www.myntra.com/search?q=${q}`;
+    if (s.includes('ajio')) return `https://www.ajio.com/search/?text=${q}`;
+    if (s.includes('amazon')) return `https://www.amazon.in/s?k=${q}`;
+    if (s.includes('flipkart')) return `https://www.flipkart.com/search?q=${q}`;
+    if (s.includes('zara')) return `https://www.zara.com/in/en/search?searchTerm=${q}`;
+    if (s.includes('h&m') || s.includes('hm')) return `https://www2.hm.com/en_in/search-results.html?q=${q}`;
+    if (s.includes('uniqlo')) return `https://www.uniqlo.com/in/en/search?q=${q}`;
+    // Fallback: regular google search for the product
+    return `https://www.google.com/search?q=${encodeURIComponent(title + ' ' + source)}`;
+  }
+  
+  return url;
+}
+
 export async function POST(req: Request) {
   try {
-    const { category, gender, color, style, pattern, distinctive_feature, keywords } = await req.json();
+    const { category, gender, color, style, pattern, distinctive_feature, keywords, budget } = await req.json();
 
     // If Iris passes free-form keywords (for missing piece), use them directly
     if (keywords && !category) {
@@ -20,7 +46,8 @@ export async function POST(req: Request) {
       } catch (_) {}
 
       // Sharp, gender-specific query targeting Indian fashion retailers
-      const searchQuery = `${genderPrefix}${keywords} buy online myntra ajio`;
+      const budgetQuery = budget ? `under ${budget} rupees` : "";
+      const searchQuery = `${genderPrefix}${keywords} ${budgetQuery} buy online myntra ajio`.trim();
       console.log(`[FIND-PRODUCT] Missing piece search: "${searchQuery}"`);
 
       const res = await fetch("https://google.serper.dev/shopping", {
@@ -39,7 +66,7 @@ export async function POST(req: Request) {
         price: item.price ? item.price.replace(/[^\d.]/g, '') : "0",
         currency: "INR",
         imageUrl: item.imageUrl,
-        link: item.link,
+        link: extractCleanUrl(item.link, item.source || "Retailer", item.title),
         retailer: item.source || "Retailer",
       }));
       return NextResponse.json({ matches });
@@ -75,7 +102,8 @@ export async function POST(req: Request) {
     const finalStyle = style?.toLowerCase().includes(fitQuery.toLowerCase()) ? style : `${fitQuery} ${style || ""}`.trim();
 
     // Clean Google Shopping query: exactly 5-8 powerful words
-    const query = `${gender && gender !== 'Unisex' ? gender + "'s" : ""} ${pattern || ""} ${color || ""} ${finalStyle} ${distinctive_feature || ""} ${category} ${sizeQuery}`.replace(/\s+/g, ' ').trim();
+    const budgetQuery = budget ? `under ${budget} rupees` : "";
+    const query = `${gender && gender !== 'Unisex' ? gender + "'s" : ""} ${pattern || ""} ${color || ""} ${finalStyle} ${distinctive_feature || ""} ${category} ${sizeQuery} ${budgetQuery}`.replace(/\s+/g, ' ').trim();
     
     // We'll use Serper Shopping API
     const res = await fetch("https://google.serper.dev/shopping", {
@@ -103,7 +131,7 @@ export async function POST(req: Request) {
       price: item.price ? item.price.replace(/[^\d.]/g, '') : "0", 
       currency: "INR",
       imageUrl: item.imageUrl,
-      link: item.link,
+      link: extractCleanUrl(item.link, item.source || "Retailer", item.title),
       retailer: item.source || "Retailer",
     }));
 

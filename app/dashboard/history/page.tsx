@@ -43,23 +43,24 @@ export default function HistoryPage() {
         
         {/* Header */}
         <header className="mb-10">
-          <h1 className="t-h1 mb-2">Your History</h1>
-          <p className="t-body">Every piece you've bought and every outfit Iris has built for you.</p>
+          <div className="text-[10px] text-p uppercase tracking-[0.4em] mb-2 font-bold">THE ARCHIVES</div>
+          <h1 className="font-black text-4xl md:text-5xl uppercase tracking-tighter text-tx mb-4">Your History</h1>
+          <p className="text-tx-muted uppercase tracking-widest text-xs font-bold mt-4">Every piece you've bought and every outfit Iris has built for you.</p>
         </header>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-8 bg-bg-surface border border-border rounded-xl p-1 w-fit">
+        <div className="flex gap-1 mb-8 bg-bg border border-border p-1 w-fit">
           {(["purchases", "outfits"] as const).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+              className={`flex items-center gap-3 px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition-all ${
                 tab === t
-                  ? "bg-p text-white shadow-sm"
-                  : "text-tx-muted hover:text-tx"
+                  ? "bg-p text-white border border-p shadow-[0_0_20px_rgba(212,121,58,0.2)]"
+                  : "text-tx-muted hover:text-tx hover:bg-bg-surface border border-transparent"
               }`}
             >
-              {t === "purchases" ? <ShoppingBag className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+              {t === "purchases" ? <ShoppingBag className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
               {t === "purchases" ? "Purchases" : "Outfit Sessions"}
             </button>
           ))}
@@ -97,9 +98,9 @@ export default function HistoryPage() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="flex items-center gap-5 bg-bg-surface border border-border rounded-2xl p-5 hover:border-p transition-all group"
+                  className="flex items-center gap-5 bg-bg-surface border border-border p-5 hover:border-p transition-all group"
                 >
-                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-bg shrink-0 border border-border">
+                  <div className="w-20 h-24 overflow-hidden bg-bg shrink-0 border border-border">
                     {p.wardrobe_items?.image_url ? (
                       <img src={p.wardrobe_items.image_url} alt={p.wardrobe_items.category} className="w-full h-full object-cover" />
                     ) : (
@@ -110,24 +111,24 @@ export default function HistoryPage() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-tx capitalize truncate">
+                    <p className="font-bold text-tx uppercase tracking-widest text-[10px] truncate mb-2">
                       {p.wardrobe_items?.category || "Item"}
-                      {p.wardrobe_items?.color && <span className="text-tx-muted font-normal"> · {p.wardrobe_items.color}</span>}
+                      {p.wardrobe_items?.color && <span className="text-tx-muted"> · {p.wardrobe_items.color}</span>}
                     </p>
-                    <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                      <span className="flex items-center gap-1.5 text-xs text-tx-muted">
-                        <Store className="w-3 h-3" /> {p.retailer || "Unknown retailer"}
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <span className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] font-bold text-tx-muted">
+                        <Store className="w-3 h-3 text-p" /> {p.retailer || "UNKNOWN RETAILER"}
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs text-tx-muted">
-                        <Clock className="w-3 h-3" /> {formatDate(p.created_at)}
+                      <span className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] font-bold text-tx-muted">
+                        <Clock className="w-3 h-3 text-p" /> {formatDate(p.created_at)}
                       </span>
                     </div>
                   </div>
 
-                  <div className="text-right shrink-0">
-                    <p className="text-lg font-bold text-tx">₹{(p.price || 0).toLocaleString("en-IN")}</p>
-                    <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                      p.status === "completed" ? "bg-green-500/10 text-green-600" : "bg-yellow-500/10 text-yellow-600"
+                  <div className="text-right shrink-0 flex flex-col items-end gap-2">
+                    <p className="text-xl font-black tracking-tighter text-tx">₹{(p.price || 0).toLocaleString("en-IN")}</p>
+                    <span className={`text-[9px] uppercase tracking-widest font-bold px-3 py-1.5 border ${
+                      p.status === "completed" ? "bg-green-500/10 text-green-500 border-green-500/30" : "bg-yellow-500/10 text-yellow-500 border-yellow-500/30"
                     }`}>
                       {p.status || "completed"}
                     </span>
@@ -157,32 +158,34 @@ export default function HistoryPage() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="bg-bg-surface border border-border rounded-2xl p-5 hover:border-p transition-all group"
+                  className="bg-bg-surface border border-border p-6 hover:border-p transition-all group"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <Sparkles className="w-4 h-4 text-p" />
-                        <span className="text-xs font-bold uppercase tracking-widest text-p">Iris Outfit</span>
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 bg-p/10 border border-p/30 flex items-center justify-center">
+                          <Sparkles className="w-3 h-3 text-p" />
+                        </div>
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-p">IRIS OUTFIT</span>
                       </div>
-                      <h3 className="font-display text-xl font-semibold capitalize text-tx">{outfit.occasion}</h3>
+                      <h3 className="font-black tracking-tighter text-3xl uppercase text-tx">{outfit.occasion}</h3>
                       {outfit.missing_category && (
-                        <p className="text-sm text-tx-muted mt-1">
-                          Missing piece: <span className="text-p font-medium">{outfit.missing_category}</span>
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-tx-muted mt-3 border-l-2 border-p pl-3">
+                          MISSING: <span className="text-p">{outfit.missing_category}</span>
                         </p>
                       )}
                     </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-xs text-tx-muted">{formatDate(outfit.created_at)}</p>
-                      <p className="text-xs font-bold text-tx-muted mt-1">{(outfit.item_ids || []).length} pieces</p>
+                    <div className="text-right shrink-0 flex flex-col items-end">
+                      <p className="text-[9px] uppercase tracking-widest font-bold text-tx-muted mb-1">{formatDate(outfit.created_at)}</p>
+                      <p className="text-[10px] font-bold text-tx-muted uppercase tracking-widest border border-border bg-bg px-2 py-1">{(outfit.item_ids || []).length} PIECES</p>
                     </div>
                   </div>
 
                   <Link
                     href={`/dashboard/style?occasion=${encodeURIComponent(outfit.occasion)}`}
-                    className="mt-4 flex items-center gap-2 text-xs font-semibold text-p hover:underline"
+                    className="mt-6 flex items-center gap-3 text-[10px] tracking-[0.2em] uppercase font-bold text-tx hover:text-p transition-colors"
                   >
-                    Recreate this look <ChevronRight className="w-3 h-3" />
+                    RECREATE LOOK <ChevronRight className="w-3 h-3" />
                   </Link>
                 </motion.div>
               ))}

@@ -11,8 +11,9 @@ interface Attributes {
   details: string;
 }
 
-export function UploadBox({ onAnalysisComplete }: { onAnalysisComplete: (attr: Attributes, url: string) => void }) {
+export function UploadBox({ onAnalysisComplete }: { onAnalysisComplete: (attr: Attributes, url: string, budget?: string) => void }) {
   const [urlInput, setUrlInput] = useState("");
+  const [budget, setBudget] = useState("");
   const [targetGender, setTargetGender] = useState("Auto-detect");
   const [analyzing, setAnalyzing] = useState(false);
   const [hasDna, setHasDna] = useState(false);
@@ -35,7 +36,7 @@ export function UploadBox({ onAnalysisComplete }: { onAnalysisComplete: (attr: A
       if (!res.ok) throw new Error("Analysis failed");
       
       const data = await res.json();
-      onAnalysisComplete(data, imageUrl);
+      onAnalysisComplete(data, imageUrl, budget);
       toast.success("Image analyzed!");
     } catch (err) {
       console.error(err);
@@ -55,7 +56,7 @@ export function UploadBox({ onAnalysisComplete }: { onAnalysisComplete: (attr: A
     <div className="card p-6 w-full max-w-xl mx-auto space-y-6">
       <div>
         <div className="flex justify-between items-start mb-2">
-          <h2 className="t-h3 flex items-center gap-2"><Sparkles className="text-p" size={20} /> Grabbit Core</h2>
+          <h2 className="font-black text-2xl tracking-tighter uppercase flex items-center gap-2"><Sparkles className="text-p" size={20} /> FITS.</h2>
           
           {hasDna ? (
             <span className="text-[10px] font-bold uppercase tracking-widest bg-p/10 text-p px-3 py-1.5 border border-p/20 flex items-center gap-1">
@@ -73,7 +74,21 @@ export function UploadBox({ onAnalysisComplete }: { onAnalysisComplete: (attr: A
             </select>
           )}
         </div>
-        <p className="t-small">Upload a screenshot or paste an image URL to identify clothing attributes.</p>
+        <p className="text-[10px] uppercase font-bold tracking-widest text-tx-muted mb-6">Upload a screenshot or paste an image URL to identify clothing attributes.</p>
+        
+        <div className="mb-6">
+          <label className="text-[10px] uppercase font-bold tracking-widest text-tx-muted mb-2 block flex items-center justify-between">
+            <span>Max Budget (₹)</span>
+            <span className="opacity-50">Optional</span>
+          </label>
+          <input 
+             type="number"
+             placeholder="NO LIMIT"
+             value={budget}
+             onChange={(e) => setBudget(e.target.value)}
+             className="w-full bg-bg border border-border rounded-none px-4 py-3 text-[10px] uppercase font-bold tracking-widest focus:outline-none focus:border-p transition-colors"
+          />
+        </div>
       </div>
 
       {analyzing ? (
@@ -86,23 +101,23 @@ export function UploadBox({ onAnalysisComplete }: { onAnalysisComplete: (attr: A
           <FileUpload onUpload={(url) => analyzeImage(url)} />
           
           <div className="relative">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
-            <div className="relative flex justify-center text-xs uppercase"><span className="bg-bg-surface px-2 text-tx-muted">Or</span></div>
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
+            <div className="relative flex justify-center"><span className="bg-bg-surface px-4 text-[9px] uppercase tracking-[0.2em] font-bold text-tx-muted">OR</span></div>
           </div>
 
           <form onSubmit={handleUrlSubmit} className="flex gap-2">
             <div className="relative flex-1">
-              <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-tx-muted" size={16} />
+              <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-tx-muted" size={16} />
               <input 
                 type="url" 
-                placeholder="Paste image URL here..." 
+                placeholder="PASTE IMAGE URL HERE..." 
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
-                className="w-full bg-bg border border-border rounded-none pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:border-tx transition-colors"
+                className="w-full bg-bg border border-border rounded-none pl-12 pr-4 py-4 text-[10px] uppercase font-bold tracking-widest focus:outline-none focus:border-p transition-colors"
                 required
               />
             </div>
-            <button type="submit" className="btn-primary">Analyze</button>
+            <button type="submit" className="bg-p text-white font-bold text-[10px] uppercase tracking-[0.2em] px-8 hover:bg-p-h transition-colors">ANALYZE</button>
           </form>
         </>
       )}

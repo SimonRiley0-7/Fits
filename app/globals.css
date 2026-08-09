@@ -24,30 +24,30 @@
 }
 
 :root {
-  /* Premium Light Theme */
-  --bg: #FAFAFA;          /* Crisp Alabaster */
-  --bg-surface: #F4F2EE;  /* Warm Paper */
-  --border: #E6E2DB;      /* Soft Taupe */
+  /* Premium Light Theme (Landing Page Sync) */
+  --bg: #F0EBE3;
+  --bg-surface: #E8E2D9;
+  --border: #D0C5B1;
   
   /* Text Colors */
-  --tx: #1A1612;          /* Deep Charcoal */
-  --tx-muted: #8C7B6B;    /* Warm Stone */
+  --tx: #0C0A08;
+  --tx-muted: #5A4F43;
   
   /* Accents */
-  --p: #D4793A;           /* Burnt Amber */
+  --p: #D4793A;
   --p-h: #E58643;
   --success: #5E8A65;
 }
 
 .dark {
-  /* Premium Soft Dark Theme */
-  --bg: #0C0A0A;          /* Very Deep Warm Charcoal */
-  --bg-surface: #141212;  /* Slightly lighter surface */
-  --border: #262222;      /* Soft subtle border */
+  /* Premium Soft Dark Theme (Landing Page Sync) */
+  --bg: #0C0A08;
+  --bg-surface: #181410;
+  --border: #2A2420;
   
   /* Text Colors */
-  --tx: #F5F5F5;          /* Soft White */
-  --tx-muted: #9E9595;    /* Warm Gray */
+  --tx: #F0EBE3;
+  --tx-muted: #8A7968;
   
   /* Accents */
   --p: #D4793A;

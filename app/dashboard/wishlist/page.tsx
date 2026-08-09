@@ -51,13 +51,14 @@ export default function WishlistPage() {
         {/* Header */}
         <header className="mb-10 flex items-end justify-between gap-4">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="t-h1">Wishlist</h1>
-              <span className="bg-bg-surface border border-border text-tx-muted text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            <div className="text-[10px] text-p uppercase tracking-[0.4em] mb-2 font-bold">SAVED</div>
+            <div className="flex items-center gap-4 mb-2">
+              <h1 className="font-black text-4xl md:text-5xl uppercase tracking-tighter text-tx">Wishlist</h1>
+              <span className="bg-p/10 border border-p/30 text-p text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
                 {items.length} items
               </span>
             </div>
-            <p className="t-body">Items you're saving for later.</p>
+            <p className="text-tx-muted uppercase tracking-widest text-xs font-bold mt-4">Items you're saving for later.</p>
           </div>
         </header>
 
@@ -114,7 +115,7 @@ export default function WishlistPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ delay: i * 0.04 }}
-                  className="bg-bg-surface border border-border rounded-xl overflow-hidden group hover:border-p transition-all relative flex flex-col"
+                  className="bg-bg-surface border border-border overflow-hidden group hover:border-p transition-all relative flex flex-col"
                 >
                   {/* Image */}
                   <div className="relative aspect-[4/5] bg-bg overflow-hidden">
@@ -126,43 +127,43 @@ export default function WishlistPage() {
                     />
 
                     {/* Retailer badge */}
-                    <div className="absolute top-2 right-2 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full border bg-bg/80 backdrop-blur-sm border-border text-tx-muted">
+                    <div className="absolute top-2 right-2 text-[9px] uppercase tracking-[0.2em] font-bold px-3 py-1 border bg-bg/90 backdrop-blur-md border-border text-tx-muted">
                       {item.retailer}
                     </div>
 
                     {/* Action buttons overlay */}
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                       <button
                         onClick={() => handleAddToCart(item)}
-                        className="w-10 h-10 rounded-full bg-p text-white flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+                        className="w-12 h-12 bg-p text-white flex items-center justify-center shadow-xl hover:bg-p-h transition-colors border border-p/50"
                         title="Add to cart"
                       >
-                        <ShoppingCart className="w-4 h-4" />
+                        <ShoppingCart className="w-5 h-5" />
                       </button>
                       <a
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full bg-bg/90 text-tx flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+                        className="w-12 h-12 bg-bg/90 text-tx flex items-center justify-center shadow-xl hover:text-p border border-border transition-colors"
                         title="View on site"
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink className="w-5 h-5" />
                       </a>
                       <button
                         onClick={() => handleRemove(item)}
                         disabled={removing === item.product_id}
-                        className="w-10 h-10 rounded-full bg-bg/90 text-red-400 flex items-center justify-center shadow-xl hover:scale-110 transition-transform disabled:opacity-50"
+                        className="w-12 h-12 bg-bg/90 text-red-500 flex items-center justify-center shadow-xl hover:bg-red-500/10 border border-border transition-colors disabled:opacity-50"
                         title="Remove"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
 
                   {/* Info */}
-                  <div className="p-3 flex flex-col gap-1 flex-1">
-                    <p className="text-xs font-medium text-tx line-clamp-2 leading-snug flex-1">{item.title}</p>
-                    <p className="text-sm font-bold text-tx">₹{(item.price || 0).toLocaleString("en-IN")}</p>
+                  <div className="p-4 flex flex-col gap-2 flex-1">
+                    <p className="text-[10px] uppercase font-bold tracking-widest text-tx line-clamp-2 leading-relaxed flex-1">{item.title}</p>
+                    <p className="text-sm font-black tracking-tighter text-p">₹{(item.price || 0).toLocaleString("en-IN")}</p>
                   </div>
 
                   {/* Add to Cart bottom button */}

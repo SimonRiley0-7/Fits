@@ -1,480 +1,429 @@
 "use client";
 
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { NumberTicker } from "@/components/NumberTicker";
-import { ArrowRight, Play, Sparkles, Check } from "lucide-react";
-import { motion } from "framer-motion";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { DemoVideo } from "@/components/DemoVideo";
+import { ArrowDown, Play, X, Sparkles, Shirt } from "lucide-react";
 
 export default function LandingPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Force dark mode for the landing page aesthetic
+    document.documentElement.classList.add('dark');
+  }, []);
+
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="min-h-screen bg-bg text-tx selection:bg-p selection:text-white pb-24">
-      
-      {/* ─── NAVBAR ─── */}
-      <nav className="fixed top-0 left-0 right-0 p-6 flex justify-between items-center z-50 bg-bg/80 backdrop-blur-md border-b border-border transition-all">
-        <div className="font-display italic font-bold text-2xl tracking-tight text-tx">Fits.</div>
-        <div className="hidden md:flex items-center gap-8">
-          <Link href="#how-it-works" className="t-small hover:text-tx transition-colors">How it works</Link>
-          <Link href="#iris" className="t-small hover:text-tx transition-colors">Iris</Link>
-          <Link href="#grab" className="t-small hover:text-tx transition-colors">Grab</Link>
-        </div>
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          <Link href="/dashboard" className="btn-pill px-6 py-2">Start for free</Link>
-        </div>
-      </nav>
+    <main>
+      <div className="relative bg-[#F0EBE3] dark:bg-[#0C0A08] text-[#0C0A08] dark:text-[#F0EBE3] font-body selection:bg-[#D4793A]/30 overflow-x-clip transition-colors duration-1000">
 
-      {/* ─── HERO SECTION ─── */}
-      <section className="relative min-h-screen flex flex-col lg:flex-row items-center border-b border-border pt-20">
-        {/* Left 50% */}
-        <div className="w-full lg:w-1/2 p-8 md:p-16 lg:pl-24 flex flex-col justify-center">
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-tx-muted">AI stylist · live</span>
-          </div>
-          
-          <h1 className="t-display mb-8">
-            <span className="block font-normal">See it.</span>
-            <span className="block text-p italic">Grab it.</span>
-            <span className="block font-normal">Wear it.</span>
-          </h1>
-          
-          <p className="t-body max-w-md mb-12">
-            Screenshot anything. Iris finds it, styles it, and only buys what you're actually missing from your wardrobe.
-          </p>
+        {/* FILM GRAIN */}
+        <div className="pointer-events-none fixed inset-0 z-[200] opacity-[0.05] dark:opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png")' }}></div>
 
-          <div className="flex flex-wrap items-center gap-4 mb-16">
-            <Link href="/dashboard" className="btn-pill">Start Grabbing</Link>
-            <button className="inline-flex items-center gap-2 px-8 py-4 text-sm font-medium text-tx border border-tx rounded-full hover:bg-tx hover:text-bg transition-colors">
-              See how it works <Play className="w-4 h-4 fill-current" />
-            </button>
-          </div>
-
-          <p className="t-small">127 looks grabbed today · 43 wardrobes styled</p>
+        {/* ARCHITECTURAL GRID LINES */}
+        <div className="pointer-events-none fixed inset-0 z-[150] flex justify-between px-6 md:px-10 mix-blend-overlay opacity-10 dark:opacity-20">
+          <div className="w-[1px] h-full bg-black dark:bg-white"></div>
+          <div className="w-[1px] h-full bg-black dark:bg-white hidden md:block"></div>
+          <div className="w-[1px] h-full bg-black dark:bg-white hidden md:block"></div>
+          <div className="w-[1px] h-full bg-black dark:bg-white"></div>
         </div>
 
-        {/* Right 50% */}
-        <div className="w-full lg:w-1/2 h-[60vh] lg:h-screen relative flex items-center justify-center overflow-hidden border-t lg:border-t-0 lg:border-l border-border bg-bg-surface">
-          <div className="absolute top-8 right-8 z-20">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-tx-muted">01 · GRABBIT IN ACTION</span>
-          </div>
-          
-          {/* Ambient glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-p/20 blur-[120px] rounded-full pointer-events-none" />
-
-          {/* Phone Mockup */}
-          <motion.div 
-            animate={{ y: [0, -12, 0] }} 
-            transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
-            className="relative z-10 w-[300px] h-[600px] bg-bg rounded-[3rem] border-[8px] border-border shadow-2xl overflow-hidden flex flex-col"
+        {/* NAVBAR */}
+        <nav className="fixed top-0 inset-x-0 z-[100] p-6 md:p-10 flex justify-between items-start pointer-events-none mix-blend-difference text-white">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="font-black text-[9vw] md:text-[5vw] leading-none tracking-tighter uppercase pointer-events-auto"
           >
-            {/* Phone Notch */}
-            <div className="absolute top-0 inset-x-0 h-6 bg-border rounded-b-3xl w-1/2 mx-auto z-20" />
-            
-            <div className="p-4 pt-12 flex-1 flex flex-col gap-4 overflow-y-auto">
-              <div className="w-full h-48 bg-bg-surface rounded-xl overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80" alt="Jacket" className="w-full h-full object-cover opacity-80" />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent flex items-end p-4">
-                  <span className="text-[10px] font-bold uppercase tracking-widest bg-bg-surface px-2 py-1 rounded-full border border-border">Screenshot Uploaded</span>
-                </div>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-widest text-p">Jacket Matches</span>
-                </div>
-                
-                {/* Best Match */}
-                <div className="flex gap-3 bg-bg-surface border-2 border-p p-3 rounded-xl items-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 bg-p text-white text-[8px] font-bold uppercase px-1.5 py-0.5 rounded-bl-lg">Best Match</div>
-                  <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&q=80" alt="Myntra Match" className="w-12 h-12 rounded object-cover border border-border" />
-                  <div className="flex-1">
-                    <p className="text-xs font-medium">Myntra</p>
-                    <p className="text-xs text-tx-muted">₹1,299</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 bg-bg-surface border border-border p-3 rounded-xl items-center opacity-70">
-                  <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=100&q=80" alt="Ajio Match" className="w-12 h-12 rounded object-cover border border-border" />
-                  <div className="flex-1">
-                    <p className="text-xs font-medium">Ajio</p>
-                    <p className="text-xs text-tx-muted">₹1,499</p>
-                  </div>
-                </div>
-              </div>
+            FITS
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            className="flex flex-col items-end gap-1 pointer-events-auto"
+          >
+            <div className="text-[10px] uppercase tracking-widest font-medium opacity-70 hidden md:block">
+              HOW IT WORKS
             </div>
-
-            <div className="p-4 border-t border-border bg-bg-surface">
-              <button className="w-full bg-p text-white py-3 rounded-xl text-sm font-bold">Add to Cart</button>
+            <div className="w-10 h-[1px] bg-white opacity-40 my-1 hidden md:block"></div>
+            <div className="flex items-center gap-4">
+              <Link href="/dashboard" className="text-[10px] uppercase tracking-widest opacity-70 hover:opacity-100 transition-opacity">
+                [ DASHBOARD ]
+              </Link>
             </div>
           </motion.div>
-        </div>
-      </section>
+        </nav>
 
-      {/* ─── VIDEO BANNER 1: SEE IT. GRAB IT. ─── */}
-      <section className="relative bg-bg-surface py-24 md:py-32 border-b border-border overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-p/10 blur-[140px] rounded-full pointer-events-none" />
-        <div className="wrap grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
-          <div>
-            <div className="flex items-center gap-2 mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-tx-muted">01 · THE LOOP</span>
+        {/* SECTION 1 - EDITORIAL / RUNWAY (Hero) */}
+        {/* Force dark mode aesthetics here because the video has a dark background */}
+        <section className="relative h-screen w-full overflow-hidden bg-[#0C0A08]">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0C0A08]/40 via-transparent to-[#0C0A08] z-[1] pointer-events-none opacity-100 dark:opacity-100" />
+
+          <video
+            src="/videos/hero.mp4"
+            autoPlay muted loop playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-80"
+          />
+
+          {/* Bottom Left */}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }}
+            className="absolute bottom-10 left-6 md:bottom-12 md:left-10 flex flex-col gap-1 z-10 mix-blend-difference text-white"
+          >
+            <div className="text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">
+              // VISUAL DISCOVERY
             </div>
-            <h2 className="font-display text-5xl md:text-7xl font-bold tracking-tight uppercase leading-none mb-6">
-              See it.<br/>
-              <span className="italic font-normal text-p">Grab it.</span><br/>
-              Wear it.
-            </h2>
-            <p className="t-body text-tx-muted max-w-lg">
-              You send us what catches your eye. We tell you where to buy it and what it costs — in one tap, no tabs to juggle.
-            </p>
-          </div>
-          <DemoVideo src="/videos/see-it-grab-it.mov" label="fits.live/grab" />
-        </div>
-      </section>
+            <div className="text-sm md:text-base font-medium max-w-xs leading-relaxed opacity-90">
+              Scan the world. Acquire the look.
+            </div>
+          </motion.div>
 
-      {/* ─── MARQUEE STRIP ─── */}
-      <div className="w-full bg-bg-surface border-b border-border py-4 overflow-hidden relative flex items-center">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-8 t-small uppercase tracking-widest text-tx-muted">
-          <span>Screenshot anything</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>₹2,14,000 in outfits found</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>127 looks grabbed</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>43 closets styled by Iris</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>Zero manual searching</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>Full outfits, one checkout</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          
-          {/* Duplicate for infinite loop */}
-          <span>Screenshot anything</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>₹2,14,000 in outfits found</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>127 looks grabbed</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>43 closets styled by Iris</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>Zero manual searching</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
-          <span>Full outfits, one checkout</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-p" />
+          {/* Bottom Right */}
+          <div className="absolute bottom-8 right-6 md:bottom-10 md:right-10 flex flex-col items-end z-10">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-[10px] md:text-xs uppercase tracking-[0.4em] mb-2 opacity-80 font-bold text-white mix-blend-difference"
+            >
+              THE FASHION LOOP
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.8 }}
+              className="font-black text-[15vw] md:text-[10vw] leading-[0.75] uppercase tracking-tighter text-right"
+            >
+              <span className="text-white mix-blend-difference">IT</span> <span className="text-[#D4793A]">FITS</span>
+            </motion.div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center z-10 opacity-50 mix-blend-difference text-white">
+            <motion.div
+              initial={{ height: 0 }}
+              animate={{ height: 60 }}
+              transition={{ duration: 1.5, ease: "circOut", delay: 1.2 }}
+              className="w-[1px] bg-white origin-top"
+            />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2, duration: 1.5 }}
+            >
+              <ArrowDown className="w-3 h-3 mt-4" />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* SECTION 2 - THE CONCEPT */}
+        <section className="relative h-screen w-full overflow-hidden bg-[#0C0A08] flex border-t border-[#181410]">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0C0A08]/80 to-transparent z-[1] pointer-events-none" />
+
+          <video
+            src="/videos/iris-stylist.mov"
+            autoPlay muted loop playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-70 mix-blend-luminosity"
+          />
+
+          <div className="absolute bottom-10 left-6 md:bottom-12 md:left-10 flex flex-col gap-1 z-20 mix-blend-difference text-white">
+            <div className="text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">
+              [ FROM SIGHT TO STYLE ]
+            </div>
+            <div className="text-sm md:text-base font-medium max-w-xs leading-relaxed opacity-90">
+              Zero searching. Just find the fit.
+            </div>
+          </div>
+
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex flex-col items-center text-center z-10 mix-blend-difference text-white">
+            <div className="text-[10px] text-white/50 uppercase tracking-[0.5em] mb-6 font-bold">THE CONCEPT</div>
+            <div className="font-black text-[12vw] md:text-[8vw] leading-[0.9] uppercase tracking-tighter">
+              <div className="text-white/40 mix-blend-overlay">SEE IT.</div>
+              <div className="text-[#D4793A] mix-blend-normal drop-shadow-[0_0_20px_rgba(212,121,58,0.4)]">GRAB IT.</div>
+              <div className="text-white/40 mix-blend-overlay">WEAR IT.</div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 3 - HOW IRIS WORKS (PINNED SCROLL) */}
+        <HowItWorksSection />
+
+        {/* SECTION 4 - THE WARDROBE (INTERACTIVE UI) */}
+        <InteractiveWardrobeSection />
+
+        {/* SECTION 5 - FINAL CTA */}
+        {/* We use dark mode variables to automatically flip the CTA to contrast with the page */}
+        <section className="relative h-screen w-full bg-[#080706] dark:bg-[#F0EBE3] flex flex-col items-center justify-center px-4 overflow-hidden border-t border-[#2A2420] dark:border-[#181410] transition-colors duration-1000">
+
+          <img
+            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
+            alt="Fashion Editorial"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 dark:opacity-50"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080706] dark:from-[#F0EBE3] via-[#080706]/60 dark:via-[#F0EBE3]/60 to-transparent z-[1] pointer-events-none transition-colors duration-1000" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0C0A08]/40 dark:from-[#0C0A08]/40 to-transparent z-[1] pointer-events-none opacity-80 dark:opacity-40 transition-opacity duration-1000" />
+
+          <div className="text-[10px] text-[#D4793A] uppercase tracking-[0.4em] mb-8 md:mb-12 font-bold z-10 drop-shadow-sm">
+            YOUR DIGITAL CLOSET
+          </div>
+
+          <div className="font-black text-[13vw] md:text-[10vw] leading-[0.85] uppercase text-center mb-12 md:mb-16 text-[#F0EBE3] dark:text-[#0C0A08] tracking-tighter z-10 drop-shadow-xl transition-colors duration-1000">
+            <div>ALREADY HAVE</div>
+            <div className="text-[#D4793A]">MOST OF IT.</div>
+          </div>
+
+          <div className="text-sm md:text-lg mb-12 font-bold text-[#F0EBE3]/60 dark:text-[#0C0A08]/60 z-10 uppercase tracking-widest text-center max-w-md mix-blend-normal dark:mix-blend-multiply drop-shadow-sm transition-colors duration-1000">
+            Your wardrobe is already enough.<br />Iris finds what completes it.
+          </div>
+
+          <Link
+            href="/dashboard"
+            className="group relative bg-[#F0EBE3] dark:bg-[#0C0A08] text-[#0C0A08] dark:text-[#F0EBE3] px-16 py-6 md:px-24 md:py-6 rounded-none font-black text-sm tracking-[0.2em] overflow-hidden hover:bg-white dark:hover:bg-[#181410] transition-all z-10 shadow-[0_20px_50px_rgba(240,235,227,0.1)] dark:shadow-[0_20px_50px_rgba(12,10,8,0.3)] hover:shadow-[0_20px_60px_rgba(240,235,227,0.2)] dark:hover:shadow-[0_20px_60px_rgba(12,10,8,0.5)] scale-100 hover:scale-105 active:scale-95"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 dark:via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+            <span>ENTER DASHBOARD</span>
+          </Link>
+
+          <div className="absolute bottom-8 md:bottom-12 text-[9px] md:text-[10px] text-[#F0EBE3]/40 dark:text-[#0C0A08]/40 font-bold tracking-widest uppercase z-10 transition-colors duration-1000">
+            FITS INTELLIGENCE // PRIVATE ACCESS
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="relative z-[80] bg-[#080706] dark:bg-[#F0EBE3] pb-8 text-center pt-4 transition-colors duration-1000 border-t border-[#181410] dark:border-[#D0C5B1]/50">
+          <p className="text-[9px] text-[#F0EBE3]/30 dark:text-[#0C0A08]/30 uppercase tracking-[0.5em] font-bold transition-colors duration-1000">
+            <span className="text-[#D4793A] opacity-100">FITS</span> · HACK DEVENGERS 1.0 · 2026
+          </p>
+        </footer>
+
+      </div>
+    </main>
+  );
+}
+
+// -------------------------------------------------------------
+// SECTION 3 - HOW IRIS WORKS 
+// -------------------------------------------------------------
+function HowItWorksSection() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const [activeStep, setActiveStep] = useState(1);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < 0.25) setActiveStep(1);
+    else if (latest < 0.50) setActiveStep(2);
+    else if (latest < 0.75) setActiveStep(3);
+    else setActiveStep(4);
+  });
+
+  return (
+    <section ref={containerRef} className="relative h-[250vh] bg-[#F0EBE3] dark:bg-[#0C0A08] transition-colors duration-1000">
+      <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row overflow-hidden border-t border-[#D0C5B1] dark:border-[#181410] transition-colors duration-1000">
+
+        {/* LEFT: STICKY TEXT BLOCK */}
+        <div className="w-full md:w-1/2 h-[45vh] md:h-full flex flex-col justify-center px-6 md:px-10 relative z-20 bg-[#F0EBE3]/80 dark:bg-[#0C0A08]/80 backdrop-blur-md md:bg-transparent md:backdrop-blur-none border-r border-[#D0C5B1] dark:border-[#181410]/50 transition-colors duration-1000">
+          <div className="absolute top-8 md:top-32 left-6 md:left-10 text-[10px] text-[#D4793A] uppercase tracking-[0.4em] font-bold">
+            HOW IRIS WORKS
+          </div>
+
+          <StepText
+            activeStep={activeStep} step={1} number="01"
+            title="CAPTURE."
+            desc="You see a look you desire. Screenshot it. That is the only input Iris requires."
+          />
+          <StepText
+            activeStep={activeStep} step={2} number="02"
+            title="IDENTIFY."
+            desc="Iris isolates every garment. The jacket, the denim, the footwear. Nothing is missed."
+          />
+          <StepText
+            activeStep={activeStep} step={3} number="03"
+            title="DISCOVERY."
+            desc="Iris scans premium retailers instantly, matching exact styles, cuts, and colors."
+          />
+          <StepText
+            activeStep={activeStep} step={4} number="04"
+            title="ACQUIRE."
+            desc="One tap checkout. Every piece lands directly in your digital wardrobe."
+          />
+        </div>
+
+        {/* RIGHT: SCROLLING IMAGES IN NEGATIVE SPACE */}
+        <div className="w-full md:w-1/2 h-[55vh] md:h-full relative overflow-hidden flex items-center justify-center bg-[#E8E2D9] dark:bg-[#080706] transition-colors duration-1000">
+          <div className="absolute inset-0 bg-[#F0EBE3] dark:bg-[#0C0A08] opacity-50 mix-blend-overlay transition-colors duration-1000"></div>
+
+          {/* UPDATED RELIABLE IMAGE URLS */}
+          <StepImage
+            activeStep={activeStep} step={1}
+            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80"
+          />
+          <StepImage
+            activeStep={activeStep} step={2}
+            src="/images/wardrobe/step_2.png"
+          />
+          <StepImage
+            activeStep={activeStep} step={3}
+            src="/images/wardrobe/step_3.png"
+          />
+          <StepImage
+            activeStep={activeStep} step={4}
+            src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80"
+          />
         </div>
       </div>
-
-      {/* ─── HOW IT WORKS (THE LOOP) ─── */}
-      <section id="how-it-works" className="bg-bg py-24 md:py-32 border-b border-border">
-        <div className="wrap">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-            className="mb-16 md:mb-24"
-          >
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">The loop</h2>
-            <p className="t-body text-tx-muted">Three steps to a better wardrobe.</p>
-          </motion.div>
-
-          <div className="relative">
-            {/* Steps Container */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
-                className="relative z-10 space-y-6"
-              >
-                <h3 className="font-display text-2xl font-medium">Screenshot anything</h3>
-                <p className="t-body">Any source. Instagram, Pinterest, a photo you took on the street.</p>
-                <div className="aspect-[4/3] bg-bg-surface border border-border flex items-center justify-center relative overflow-hidden rounded-xl">
-                  <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80" alt="Fashion street style" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-20 h-20 border-2 border-dashed border-white/80 rounded-xl flex items-center justify-center bg-black/30 backdrop-blur-sm">
-                      <ArrowRight className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                className="relative z-10 space-y-6"
-              >
-                <h3 className="font-display text-2xl font-medium">Iris finds every piece</h3>
-                <p className="t-body">Multi-item detection. One screenshot finds the whole outfit.</p>
-                <div className="aspect-[4/3] bg-bg-surface border border-border p-4 flex flex-col gap-2 rounded-xl relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80" alt="Detected items" className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm" />
-                  <div className="relative z-10 flex-1 bg-bg/80 backdrop-blur-md border border-border p-2 flex gap-2 rounded-lg">
-                    <div className="w-1/3 bg-bg-surface relative rounded-md overflow-hidden ring-2 ring-p ring-offset-2 ring-offset-bg">
-                      <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80" alt="Jacket" className="w-full h-full object-cover" />
-                      <div className="absolute top-1 right-1 bg-p text-[10px] font-bold px-1.5 py-0.5 rounded-sm text-white shadow-md">Jacket</div>
-                    </div>
-                    <div className="w-1/3 bg-bg-surface rounded-md overflow-hidden border border-border">
-                      <img src="https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?w=400&q=80" alt="Shirt" className="w-full h-full object-cover opacity-70" />
-                    </div>
-                    <div className="w-1/3 bg-bg-surface rounded-md overflow-hidden border border-border">
-                      <img src="https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400&q=80" alt="Pants" className="w-full h-full object-cover opacity-70" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
-                className="relative z-10 space-y-6"
-              >
-                <h3 className="font-display text-2xl font-medium">Buy the look</h3>
-                <p className="t-body">One checkout. Everything lands in your wardrobe automatically.</p>
-                <div className="aspect-[4/3] bg-bg-surface border border-border p-4 flex flex-col rounded-xl relative overflow-hidden">
-                  <div className="flex-1 mb-3 flex flex-col gap-2 relative z-10">
-                    <div className="flex items-center gap-3 bg-bg border border-border p-2 rounded-lg">
-                      <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&q=80" className="w-10 h-10 rounded object-cover" />
-                      <div className="flex-1"><div className="h-2 bg-tx/20 rounded w-3/4 mb-1" /><div className="h-2 bg-tx/10 rounded w-1/2" /></div>
-                    </div>
-                    <div className="flex items-center gap-3 bg-bg border border-border p-2 rounded-lg opacity-80">
-                      <img src="https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?w=100&q=80" className="w-10 h-10 rounded object-cover" />
-                      <div className="flex-1"><div className="h-2 bg-tx/20 rounded w-2/3 mb-1" /><div className="h-2 bg-tx/10 rounded w-1/2" /></div>
-                    </div>
-                    <div className="flex items-center gap-3 bg-bg border border-border p-2 rounded-lg opacity-60">
-                      <img src="https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=100&q=80" className="w-10 h-10 rounded object-cover" />
-                      <div className="flex-1"><div className="h-2 bg-tx/20 rounded w-1/2 mb-1" /><div className="h-2 bg-tx/10 rounded w-1/3" /></div>
-                    </div>
-                  </div>
-                  <div className="h-10 bg-p w-full rounded-lg flex items-center justify-center text-white text-xs font-bold relative z-10 shadow-lg">Checkout — ₹8,497</div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Background Numbers */}
-            <div className="absolute top-12 left-0 w-full flex justify-between px-8 md:px-12 pointer-events-none select-none z-0">
-              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 1 }} className="font-display text-[15rem] leading-none font-bold text-tx opacity-5">01</motion.span>
-              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4, duration: 1 }} className="font-display text-[15rem] leading-none font-bold text-tx opacity-5 hidden md:block">02</motion.span>
-              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.6, duration: 1 }} className="font-display text-[15rem] leading-none font-bold text-tx opacity-5 hidden lg:block">03</motion.span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── VIDEO BANNER 2: IRIS STYLIST ─── */}
-      <section className="relative bg-bg py-24 md:py-32 border-b border-border overflow-hidden">
-        <div className="wrap grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
-          <DemoVideo src="/videos/iris-stylist.mov" label="fits.live/style" />
-          <div>
-            <div className="flex items-center gap-2 mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-tx-muted">02 · YOUR STYLIST</span>
-            </div>
-            <h2 className="font-display text-5xl md:text-7xl font-bold tracking-tight uppercase leading-none mb-6">
-              Meet<br/>
-              <span className="italic font-normal text-p">Iris.</span>
-            </h2>
-            <p className="t-body max-w-md mb-8">
-              Your personal AI stylist. She reads your wardrobe and builds the perfect outfit for any occasion — and only shops the exact piece you&apos;re missing.
-            </p>
-            <Link href="#iris" className="text-p font-bold uppercase tracking-widest text-sm hover:text-tx transition-colors">
-              See how it works →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── IRIS FEATURE SECTION ─── */}
-      <section id="iris" className="border-b border-border flex flex-col lg:flex-row bg-bg">
-        <motion.div 
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="w-full lg:w-[45%] p-8 md:p-16 lg:p-24 border-r-0 lg:border-r border-b lg:border-b-0 border-border flex flex-col justify-center"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-p/10 flex items-center justify-center mb-8">
-            <Sparkles className="w-6 h-6 text-p" />
-          </div>
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">Your personal AI stylist.</h2>
-          <p className="t-body text-tx-muted mb-8">
-            Iris knows your wardrobe better than you do. Tell her you're going to a beach wedding, and she'll build the perfect fit using pieces you already own.
-          </p>
-          <ul className="space-y-4 mb-10">
-            {[
-              "Mixes existing pieces with new ones",
-              "Understands dress codes & weather",
-              "Creates infinite combinations"
-            ].map(item => (
-              <li key={item} className="flex items-center gap-3 t-small">
-                <Check className="w-4 h-4 text-p" />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div>
-            <Link href="/dashboard" className="btn-outline">Meet Iris</Link>
-          </div>
-        </motion.div>
-        
-        <div className="w-full lg:w-[55%] bg-bg-surface p-8 md:p-16 flex items-center justify-center overflow-hidden">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 40 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
-            className="w-full max-w-md bg-bg border border-border rounded-2xl shadow-2xl p-6 relative"
-          >
-            <div className="p-4 border-b border-border bg-bg-surface flex items-center gap-3 rounded-t-2xl">
-              <div className="w-2 h-2 rounded-full bg-p animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-widest text-tx-muted">Iris · your wardrobe has 14 pieces</span>
-            </div>
-            
-            <div className="flex-1 p-6 space-y-6">
-              <div className="flex justify-end">
-                <div className="bg-p text-white px-4 py-3 text-sm max-w-[80%] rounded-2xl rounded-tr-sm">
-                  what do I wear for my interview tomorrow
-                </div>
-              </div>
-              
-              <div className="flex justify-start">
-                <div className="bg-bg-surface border border-border text-tx p-4 text-sm max-w-[85%] rounded-2xl rounded-tl-sm leading-relaxed space-y-3">
-                  <p>For a formal interview, here's what works from your wardrobe:</p>
-                  <ul className="space-y-1 text-tx-muted">
-                    <li>→ White Oxford shirt (saved 12 Aug)</li>
-                    <li>→ Charcoal slim trousers (saved 3 Aug)</li>
-                  </ul>
-                  <p>You're missing a blazer for this look.</p>
-                </div>
-              </div>
-
-              <div className="flex justify-start pl-4">
-                <div className="bg-bg-surface border border-p p-3 rounded-xl w-[240px]">
-                  <p className="text-xs font-bold text-tx mb-1">Blazer</p>
-                  <p className="text-[10px] text-tx-muted mb-3">Found on Myntra · ₹2,199</p>
-                  <button className="w-full bg-bg border border-border text-tx py-1.5 rounded-full text-xs hover:border-tx transition-colors">Grab it</button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── WARDROBE PREVIEW SECTION ─── */}
-      <section className="section border-b border-border bg-bg-surface">
-        <div className="wrap">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-4xl lg:text-5xl font-bold mb-4">Your wardrobe, finally organized</h2>
-            <p className="t-body max-w-xl mx-auto">Every piece you grab lands here automatically. Iris reads it every time.</p>
-          </div>
-
-          <div className="max-w-5xl mx-auto bg-bg border border-border shadow-2xl rounded-2xl overflow-hidden flex h-[500px]">
-            {/* Sidebar mock */}
-            <div className="w-48 border-r border-border bg-bg-surface hidden md:block p-4">
-              <div className="font-display italic font-bold text-xl mb-8">Fits.</div>
-              <div className="space-y-2">
-                <div className="h-8 bg-border w-full opacity-50 rounded-lg" />
-                <div className="h-8 bg-bg w-full rounded-lg" />
-                <div className="h-8 bg-bg w-full rounded-lg" />
-              </div>
-            </div>
-            {/* Content mock */}
-            <div className="flex-1 p-8 overflow-hidden">
-              <div className="flex justify-between items-center mb-6 border-b border-border pb-4">
-                <h3 className="font-display text-2xl font-medium">Your Wardrobe</h3>
-                <span className="t-small">14 pieces · 3 full outfits</span>
-              </div>
-              
-              <div className="columns-2 md:columns-3 gap-4 space-y-4">
-                {[
-                  "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&q=80",
-                  "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&q=80",
-                  "https://images.unsplash.com/photo-1588099768523-f4e6a5679d88?w=500&q=80",
-                  "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=500&q=80",
-                  "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?w=500&q=80",
-                  "https://images.unsplash.com/photo-1588117305388-c2631a279f82?w=500&q=80"
-                ].map((img, i) => (
-                  <div key={i} className={`relative bg-bg-surface border border-border rounded-xl break-inside-avoid overflow-hidden ${i === 1 ? 'border-p ring-1 ring-p/50' : ''}`}>
-                    <div className="aspect-[3/4] bg-bg relative">
-                      <img src={img} alt="Wardrobe Item" className="w-full h-full object-cover opacity-80" />
-                    </div>
-                    <div className="p-3 border-t border-border flex justify-between items-center">
-                      <span className="text-[10px] uppercase font-bold text-tx-muted">Category</span>
-                      <span className="text-[10px] text-tx-muted flex items-center gap-1">
-                        <Check className="w-3 h-3 text-p" /> In wardrobe
-                      </span>
-                    </div>
-                    {i === 1 && (
-                      <div className="absolute top-2 right-2 bg-p text-white text-[10px] font-bold px-2 py-1 flex items-center gap-1 shadow-md rounded-full">
-                        <Sparkles className="w-3 h-3" /> Build outfit →
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── SOCIAL PROOF / STATS ─── */}
-      <section className="py-24 border-b border-border bg-bg">
-        <div className="wrap grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-p text-center">
-          <div className="pt-12 md:pt-0">
-            <NumberTicker value={127} className="font-display text-5xl md:text-7xl font-bold text-tx mb-2 block" />
-            <span className="t-body uppercase tracking-widest text-xs font-bold text-tx-muted">looks grabbed</span>
-          </div>
-          <div className="pt-12 md:pt-0">
-            <span className="font-display text-5xl md:text-7xl font-bold text-tx mb-2 block">
-              ₹<NumberTicker value={6.2} className="inline" />L
-            </span>
-            <span className="t-body uppercase tracking-widest text-xs font-bold text-tx-muted">in outfits discovered</span>
-          </div>
-          <div className="pt-12 md:pt-0">
-            <NumberTicker value={43} className="font-display text-5xl md:text-7xl font-bold text-tx mb-2 block" />
-            <span className="t-body uppercase tracking-widest text-xs font-bold text-tx-muted">wardrobes styled by Iris</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── VIDEO BANNER 3: FINAL CTA ─── */}
-      <section className="relative bg-bg-surface py-24 md:py-32 border-b border-border overflow-hidden text-center">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-p/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="relative z-10 wrap flex flex-col items-center">
-          <div className="flex items-center gap-2 mb-6">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-tx-muted">03 · ZERO MANUAL SEARCHING</span>
-          </div>
-          <h2 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-tx mb-6 uppercase tracking-tight">
-            Zero Manual<br/>
-            <span className="italic font-normal text-p">Searching.</span>
-          </h2>
-          <p className="t-body text-tx-muted max-w-xl mx-auto mb-12">
-            Your closet already has most of it. Iris will find exactly what's missing, and check you out in one tap.
-          </p>
-          <div className="w-full max-w-3xl mb-12">
-            <DemoVideo src="/videos/zero-manual-searching.mov" label="fits.live/wardrobe" />
-          </div>
-          <Link href="/dashboard" className="btn-primary px-12 text-lg mb-6">
-            Start for free
-          </Link>
-          <p className="t-small text-tx-muted">No credit card. Works with any clothing image.</p>
-        </div>
-      </section>
-
-      {/* ─── FOOTER ─── */}
-      <footer className="py-12 bg-bg border-t border-border">
-        <div className="wrap flex justify-between items-center">
-          <span className="font-display italic font-bold text-xl text-tx">Fits.</span>
-          <div className="flex items-center gap-6">
-            <Link href="/privacy" className="t-small hover:text-tx transition-colors">Privacy</Link>
-            <span className="t-small">Built at Hack Devengers 1.0</span>
-          </div>
-        </div>
-      </footer>
-    </motion.div>
+    </section>
   );
+}
+
+function StepText({ activeStep, step, title, desc, number }: any) {
+  const isActive = activeStep === step;
+
+  return (
+    <div
+      className={`absolute inset-x-6 md:inset-x-10 top-1/2 -translate-y-1/2 flex flex-col pointer-events-none transition-all duration-700 ease-out 
+        ${isActive ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}
+    >
+      <div className="text-[25vw] md:text-[12vw] font-black text-[#D0C5B1] dark:text-[#2A2420] leading-none absolute -top-16 -left-2 md:-top-24 md:-left-6 z-0 opacity-40 dark:opacity-80 transition-colors duration-1000">
+        {number}
+      </div>
+      <h3 className="font-black text-[8vw] md:text-[4vw] uppercase leading-[0.85] text-[#0C0A08] dark:text-[#F0EBE3] z-10 mb-6 tracking-tighter drop-shadow-md transition-colors duration-1000">
+        {title}
+      </h3>
+      <p className="text-[#5A4F43] dark:text-[#8A7968] text-sm md:text-base max-w-sm z-10 leading-relaxed font-normal transition-colors duration-1000">
+        {desc}
+      </p>
+    </div>
+  );
+}
+
+function StepImage({ activeStep, step, src }: any) {
+  const isActive = activeStep === step;
+
+  return (
+    <div
+      className={`absolute inset-0 flex items-center justify-center p-8 md:p-20 transition-all duration-1000 ease-out
+        ${isActive ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'}`}
+    >
+      <div className="relative w-full max-w-sm aspect-[3/4] overflow-hidden shadow-2xl border border-[#D0C5B1] dark:border-[#2A2420] rounded-sm transition-colors duration-1000">
+        <div className="absolute inset-0 bg-white/10 dark:bg-[#0C0A08]/10 z-10 mix-blend-overlay transition-colors duration-1000" />
+        <img
+          src={src}
+          alt={`Step ${step}`}
+          className="absolute inset-0 w-full h-full object-cover scale-[1.03]"
+        />
+      </div>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// SECTION 4 - THE WARDROBE
+// -------------------------------------------------------------
+function InteractiveWardrobeSection() {
+  const [activeOutfit, setActiveOutfit] = useState<number | null>(null);
+
+  // UPDATED RELIABLE IMAGE URLS (Fixed item 4 and replaced mobile phone accessory with a fashion bag)
+  const items = [
+    { id: 1, type: 'top', src: '/images/wardrobe/grid_1.png', outfit: 1 }, // Editorial Full Look 1
+    { id: 2, type: 'bottom', src: '/images/wardrobe/grid_2.png', outfit: 1 }, // Jacket Detail
+    { id: 3, type: 'shoes', src: '/images/wardrobe/grid_3.png', outfit: 1 }, // Denim / Trousers
+    { id: 4, type: 'top', src: '/images/wardrobe/grid_4.png', outfit: 2 }, // Footwear
+    { id: 5, type: 'bottom', src: '/images/wardrobe/grid_5.png', outfit: 2 }, // Accessory
+    { id: 6, type: 'accessory', src: '/images/wardrobe/grid_6.png', outfit: 2 }, // Editorial Full Look 2
+  ];
+
+  return (
+    <section className="relative min-h-screen bg-[#E8E2D9] dark:bg-[#080706] pt-24 pb-32 px-6 md:px-10 flex flex-col items-center border-t border-[#D0C5B1] dark:border-[#181410] z-20 transition-colors duration-1000">
+
+      {/* Background glow */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-5 dark:opacity-[0.03] pointer-events-none transition-opacity duration-1000">
+        <div className="w-[80vw] h-[80vw] rounded-full bg-[#D4793A] blur-[150px]"></div>
+      </div>
+
+      <div className="text-center mb-16 md:mb-24 relative z-10 mt-10">
+        <div className="text-[10px] text-[#D4793A] uppercase tracking-[0.4em] mb-4 font-bold">WARDROBE</div>
+        <div className="font-black text-[11vw] md:text-[6vw] leading-[0.85] uppercase text-[#0C0A08] dark:text-[#F0EBE3] tracking-tighter transition-colors duration-1000">
+          YOUR DIGITAL CLOSET
+        </div>
+        <p className="text-[#5A4F43] dark:text-[#8A7968] mt-6 max-w-lg mx-auto text-sm md:text-base transition-colors duration-1000">
+          Every piece you acquire is saved. Iris constructs outfits instantly from your existing wardrobe. Hover over the outfits below to see them highlighted.
+        </p>
+      </div>
+
+      <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 relative z-10">
+
+        {/* Left: Iris Interface Mockup */}
+        <div className="w-full lg:w-[420px] bg-white/80 dark:bg-[#181410]/80 border border-[#D0C5B1] dark:border-[#2A2420] rounded-3xl p-8 flex flex-col shadow-2xl relative overflow-hidden backdrop-blur-3xl transition-colors duration-1000">
+          <div className="flex items-center gap-3 mb-10 pb-6 border-b border-[#D0C5B1] dark:border-[#2A2420] transition-colors duration-1000">
+            <div className="w-10 h-10 rounded-full bg-[#D4793A]/10 dark:bg-[#D4793A]/20 flex items-center justify-center border border-[#D4793A]/30 dark:border-[#D4793A]/40 shadow-[0_0_15px_rgba(212,121,58,0.2)] dark:shadow-[0_0_15px_rgba(212,121,58,0.3)]">
+              <Sparkles className="w-5 h-5 text-[#D4793A]" />
+            </div>
+            <div className="font-bold text-sm tracking-widest text-[#0C0A08] dark:text-[#F0EBE3] transition-colors duration-1000">IRIS STYLIST</div>
+          </div>
+
+          <div className="space-y-6 mb-10">
+            <div className="bg-[#F5F0E6] dark:bg-[#2A2420] text-[#0C0A08] dark:text-[#F0EBE3] text-sm p-5 rounded-2xl rounded-tr-sm self-end ml-8 border border-[#D0C5B1] dark:border-[#3A3430] shadow-xl transition-colors duration-1000">
+              "Iris, what should I wear for a coffee date today?"
+            </div>
+            <div className="bg-[#D4793A]/10 dark:bg-[#D4793A]/15 text-[#D4793A] text-sm p-5 rounded-2xl rounded-tl-sm self-start mr-8 border border-[#D4793A]/30 dark:border-[#D4793A]/40 shadow-xl leading-relaxed transition-colors duration-1000">
+              "I pulled a look from your wardrobe.<br />Your denim jacket works perfectly with the raw denim."
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 mt-auto">
+            <button
+              onMouseEnter={() => setActiveOutfit(1)}
+              onMouseLeave={() => setActiveOutfit(null)}
+              className={`w-full py-5 px-6 text-left text-sm font-bold border rounded-2xl transition-all flex justify-between items-center group
+                 ${activeOutfit === 1 ? 'bg-[#D4793A] border-[#D4793A] text-white shadow-[0_0_20px_rgba(212,121,58,0.4)]' : 'bg-white dark:bg-[#0C0A08] border-[#D0C5B1] dark:border-[#2A2420] text-[#0C0A08] dark:text-[#F0EBE3] hover:border-[#D4793A]/50 hover:bg-[#F5F0E6] dark:hover:bg-[#181410]'}`}
+            >
+              <span className="flex items-center gap-4"><Shirt className={`w-5 h-5 ${activeOutfit === 1 ? 'opacity-100' : 'opacity-50'}`} /> Coffee Date</span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">View</span>
+            </button>
+            <button
+              onMouseEnter={() => setActiveOutfit(2)}
+              onMouseLeave={() => setActiveOutfit(null)}
+              className={`w-full py-5 px-6 text-left text-sm font-bold border rounded-2xl transition-all flex justify-between items-center group
+                ${activeOutfit === 2 ? 'bg-[#D4793A] border-[#D4793A] text-white shadow-[0_0_20px_rgba(212,121,58,0.4)]' : 'bg-white dark:bg-[#0C0A08] border-[#D0C5B1] dark:border-[#2A2420] text-[#0C0A08] dark:text-[#F0EBE3] hover:border-[#D4793A]/50 hover:bg-[#F5F0E6] dark:hover:bg-[#181410]'}`}
+            >
+              <span className="flex items-center gap-4"><Shirt className={`w-5 h-5 ${activeOutfit === 2 ? 'opacity-100' : 'opacity-50'}`} /> Casual Office</span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest text-[10px]">View</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Right: Wardrobe Grid */}
+        <div className="flex-1 bg-white dark:bg-[#0C0A08] border border-[#D0C5B1] dark:border-[#2A2420] rounded-3xl p-8 shadow-2xl relative overflow-hidden transition-colors duration-1000">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {items.map(item => {
+              const isHighlighted = activeOutfit === item.outfit;
+              const isFaded = activeOutfit !== null && activeOutfit !== item.outfit;
+
+              return (
+                <div
+                  key={item.id}
+                  className={`relative aspect-[3/4] rounded-xl overflow-hidden border border-[#D0C5B1] dark:border-[#2A2420] transition-all duration-500 ease-out 
+                   ${isHighlighted ? 'ring-4 ring-[#D4793A] scale-105 z-20 shadow-[0_20px_40px_rgba(212,121,58,0.4)]' : ''} 
+                   ${isFaded ? 'opacity-40 grayscale blur-[1px]' : 'opacity-100 hover:opacity-90 hover:scale-[1.02]'}`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/90 dark:from-[#0C0A08]/90 via-transparent to-transparent z-10 opacity-80 transition-colors duration-1000" />
+                  <img src={item.src} className="absolute inset-0 w-full h-full object-cover" alt="Wardrobe item" />
+
+                  {/* Mock UI overlay on cards */}
+                  <div className={`absolute bottom-3 left-3 right-3 p-3 bg-white/90 dark:bg-[#181410]/90 backdrop-blur-xl rounded-lg border border-[#D0C5B1] dark:border-[#3A3430] text-[10px] font-bold transition-all duration-300 transform ${isHighlighted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+                    <div className="text-[#D4793A] uppercase tracking-widest mb-1">{item.type}</div>
+                    <div className="text-[#0C0A08] dark:text-white tracking-wider">OWNED PIECE</div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }

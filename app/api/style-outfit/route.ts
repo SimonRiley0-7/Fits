@@ -6,7 +6,7 @@ import { groq } from "@/lib/groq";
 export async function POST(req: Request) {
   try {
     const user = await getOrCreateUser();
-    const { occasion } = await req.json();
+    const { occasion, forceItemId } = await req.json();
 
     if (!occasion) {
       return NextResponse.json({ error: "Occasion is required" }, { status: 400 });
@@ -43,7 +43,12 @@ export async function POST(req: Request) {
     const styleDna = userData?.metadata?.style_dna || null;
     let styleInstruction = "";
     if (styleDna) {
-      styleInstruction = `\nThe user has a specific 'Style DNA' profile: they prefer ${styleDna.fitPreference} fits, and their core vibe is '${styleDna.vibe}'. ALWAYS factor this into your styling decisions and mention it in your explanation.`;
+      const genderCtx = styleDna.gender && styleDna.gender !== "Unisex" ? `The user is styling for ${styleDna.gender}'s fashion. ` : "";
+      styleInstruction = `\n${genderCtx}The user has a specific 'Style DNA' profile: they prefer ${styleDna.fitPreference} fits, and their core vibe is '${styleDna.vibe}'. ALWAYS factor this into your styling decisions and mention it in your explanation.`;
+    }
+    
+    if (forceItemId) {
+      styleInstruction += `\nCRITICAL: You MUST include the item with ID "${forceItemId}" in the outfit. Do NOT omit it.`;
     }
 
     // 2. Call Iris (Groq LLaMA-3)
@@ -65,6 +70,9 @@ export async function POST(req: Request) {
     const response = JSON.parse(completion.choices[0].message.content!);
 
     const itemIds = response.item_ids || [];
+    if (forceItemId && !itemIds.includes(forceItemId)) {
+      itemIds.push(forceItemId);
+    }
     const missingPiece = response.missing_piece_keywords || null;
 
     // Auto-save outfit to history (fire and forget)

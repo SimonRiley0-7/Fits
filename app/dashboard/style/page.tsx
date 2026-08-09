@@ -59,18 +59,20 @@ export default function StylePage() {
   // If redirected from wardrobe "Complete This Outfit"
   useEffect(() => {
     const preOccasion = searchParams.get("occasion");
-    const preItem = searchParams.get("item");
-    if (preItem) {
-      const query = `Build an outfit around my ${preItem}`;
+    const preItemName = searchParams.get("item_name") || searchParams.get("item");
+    const preItemId = searchParams.get("item_id");
+    
+    if (preItemName) {
+      const query = `Build an outfit around my ${preItemName}`;
       setOccasion(query);
-      handleStyle(undefined, query);
+      handleStyle(undefined, query, preItemId || undefined);
     } else if (preOccasion) {
       setOccasion(preOccasion);
       handleStyle(undefined, preOccasion);
     }
   }, []);
 
-  const handleStyle = async (e?: React.FormEvent, presetOccasion?: string) => {
+  const handleStyle = async (e?: React.FormEvent, presetOccasion?: string, forceItemId?: string) => {
     if (e) e.preventDefault();
     const query = presetOccasion || occasion;
     if (!query.trim()) return;
@@ -88,7 +90,7 @@ export default function StylePage() {
       const res = await fetch("/api/style-outfit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ occasion: query }),
+        body: JSON.stringify({ occasion: query, forceItemId }),
       });
 
       const data = await res.json();
@@ -159,8 +161,8 @@ export default function StylePage() {
         {!result && !loading && (
           <div className="flex flex-col items-center justify-center h-[60vh] text-tx-muted opacity-50">
             <Sparkles className="w-12 h-12 mb-4" />
-            <p className="font-display italic text-2xl">Your canvas is waiting.</p>
-            <p className="text-sm mt-2">Tell Iris where you're going.</p>
+            <p className="font-black tracking-tighter text-3xl uppercase">Your canvas is waiting.</p>
+            <p className="text-[10px] uppercase font-bold tracking-[0.2em] mt-2">Tell Iris where you're going.</p>
           </div>
         )}
 
@@ -180,7 +182,7 @@ export default function StylePage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                className="font-display italic text-xl text-center"
+                className="font-black uppercase tracking-tighter text-2xl text-center"
               >
                 {IRIS_LINES[irisLine]}
               </motion.p>
@@ -192,12 +194,12 @@ export default function StylePage() {
         {result && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12 pb-24">
             <header className="mb-8 border-b border-border pb-4 flex items-center justify-between">
-              <h2 className="t-h2 mb-0">
-                Iris built this for: <span className="text-p italic">{chatHistory.findLast(m => m.role === "user")?.content}</span>
+              <h2 className="font-black text-2xl tracking-tighter uppercase text-tx mb-0">
+                Iris built this for: <span className="text-p">{chatHistory.findLast(m => m.role === "user")?.content}</span>
               </h2>
               {saved && (
-                <span className="flex items-center gap-1.5 text-xs text-green-600 font-semibold bg-green-500/10 px-3 py-1.5 rounded-full">
-                  <CheckCircle2 className="w-3 h-3" /> Saved to History
+                <span className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest text-green-500 font-bold border border-green-500/30 bg-green-500/10 px-3 py-1">
+                  <CheckCircle2 className="w-3 h-3" /> SAVED TO HISTORY
                 </span>
               )}
             </header>
@@ -276,10 +278,10 @@ export default function StylePage() {
       <div className="w-full md:w-[40%] h-full flex flex-col bg-bg-surface border-t-2 md:border-t-0">
 
         {/* Chat Header */}
-        <div className="p-4 border-b border-border bg-bg-surface flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-          <h2 className="font-display font-bold text-lg text-tx">
-            Iris <span className="font-body font-normal text-xs uppercase tracking-widest text-tx-muted ml-2">your AI stylist</span>
+        <div className="p-6 border-b border-border bg-bg/50 flex items-center gap-3">
+          <div className="w-2 h-2 bg-p animate-pulse" />
+          <h2 className="font-black text-xl uppercase tracking-tighter text-tx">
+            IRIS <span className="font-body font-bold text-[9px] uppercase tracking-widest text-p ml-2 border border-p/30 bg-p/10 px-2 py-1">AI STYLIST ONLINE</span>
           </h2>
         </div>
 
@@ -299,11 +301,11 @@ export default function StylePage() {
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               {msg.role === "user" ? (
-                <div className="bg-p text-white px-4 py-3 text-sm max-w-[80%] rounded-2xl rounded-tr-sm">
+                <div className="bg-tx text-bg px-5 py-4 text-[10px] font-bold uppercase tracking-widest max-w-[80%] border border-transparent">
                   {msg.content}
                 </div>
               ) : (
-                <div className="bg-bg border border-border text-tx p-4 text-sm max-w-[85%] rounded-2xl rounded-tl-sm leading-relaxed whitespace-pre-wrap">
+                <div className="bg-bg border border-border text-tx p-5 text-[10px] font-bold uppercase tracking-widest max-w-[85%] leading-relaxed whitespace-pre-wrap">
                   {msg.content}
                 </div>
               )}
@@ -332,7 +334,7 @@ export default function StylePage() {
                 key={occ.label}
                 onClick={() => handleStyle(undefined, occ.label)}
                 disabled={loading}
-                className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 border border-border hover:border-p text-tx-muted hover:text-p bg-bg-surface hover:bg-bg transition-all disabled:opacity-40 rounded-full"
+                className="flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] font-bold px-4 py-2 border border-border hover:border-p text-tx-muted hover:text-p bg-bg hover:bg-p/5 transition-all disabled:opacity-40"
               >
                 <span>{occ.emoji}</span> {occ.label}
               </button>
@@ -340,18 +342,18 @@ export default function StylePage() {
           </div>
 
           <form onSubmit={(e) => handleStyle(e)} className="relative flex items-center">
-            <input
-              type="text"
-              value={occasion}
-              onChange={e => setOccasion(e.target.value)}
-              placeholder="Tell Iris where you're going..."
-              className="w-full bg-bg-surface px-4 py-4 pr-14 border border-border focus:border-p outline-none text-sm transition-colors rounded-xl"
-            />
-            <button
-              type="submit"
-              disabled={loading || !occasion.trim()}
-              className="absolute right-2 top-2 bottom-2 aspect-square bg-p text-white flex items-center justify-center hover:bg-p-h transition-colors disabled:opacity-50 rounded-lg"
-            >
+              <input
+                type="text"
+                value={occasion}
+                onChange={e => setOccasion(e.target.value)}
+                placeholder="TELL IRIS WHERE YOU'RE GOING..."
+                className="w-full bg-bg px-6 py-5 pr-16 border border-border focus:border-p outline-none text-[10px] uppercase font-bold tracking-[0.2em] transition-colors text-tx placeholder:text-tx-muted/40"
+              />
+              <button
+                type="submit"
+                disabled={loading || !occasion.trim()}
+                className="absolute right-2 top-2 bottom-2 aspect-square bg-p text-white flex items-center justify-center hover:bg-p-h transition-colors disabled:opacity-50"
+              >
               <Send className="w-4 h-4" />
             </button>
           </form>

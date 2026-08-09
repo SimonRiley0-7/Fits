@@ -18,13 +18,14 @@ export default async function DashboardPage() {
       <div className="max-w-[1200px] mx-auto w-full">
         <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
+            <div className="text-[10px] text-p uppercase tracking-[0.4em] mb-2 font-bold">THE WARDROBE</div>
             <div className="flex items-center gap-4 mb-2">
-              <h1 className="t-h1">Your Wardrobe</h1>
-              <span className="bg-bg border border-border text-tx-muted text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+              <h1 className="font-black text-4xl md:text-5xl uppercase tracking-tighter text-tx">Your Closet</h1>
+              <span className="bg-p/10 border border-p/30 text-p text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
                 {(items || []).length} pieces
               </span>
             </div>
-            <p className="t-body">Everything you own, ready to be styled.</p>
+            <p className="text-tx-muted uppercase tracking-widest text-xs font-bold mt-4">Everything you own, ready to be styled.</p>
           </div>
         </header>
         
