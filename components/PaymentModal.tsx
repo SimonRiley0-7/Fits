@@ -139,12 +139,12 @@ export function PaymentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className={`sm:max-w-md bg-white overflow-hidden border-none shadow-2xl transition-all duration-300 ${iframeUrl ? '!p-0 !max-w-lg' : ''}`}>
+      <DialogContent className={`sm:max-w-md bg-bg-surface overflow-hidden border border-border rounded-none shadow-2xl transition-all duration-300 ${iframeUrl ? '!p-0 !max-w-lg' : ''}`}>
         {!iframeUrl && (
-          <DialogHeader className="bg-bg-soft/50 p-6 pb-4 border-b border-border">
-            <DialogTitle className="flex items-center justify-center gap-2 text-xl">
+          <DialogHeader className="bg-bg p-6 pb-4 border-b border-border">
+            <DialogTitle className="flex items-center justify-center gap-3 font-black text-xl uppercase tracking-tighter text-tx">
               <ShieldCheck className="text-p w-5 h-5" />
-              Prava Checkout
+              PRAVA SECURE CHECKOUT
             </DialogTitle>
           </DialogHeader>
         )}
@@ -158,26 +158,26 @@ export function PaymentModal({
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center py-8 px-6 text-center"
               >
-                <div className="w-16 h-16 bg-p/10 rounded-full flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-p/10 flex items-center justify-center mb-6 border border-p/20">
                   <ShieldCheck className="w-8 h-8 text-p" />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-tx">Secure Checkout</h3>
-                <p className="text-tx-muted text-sm mb-8">
-                  Please complete the security check and payment in the Prava secure window.
+                <h3 className="font-black text-2xl uppercase tracking-tighter mb-3 text-tx">SECURE CHECKOUT</h3>
+                <p className="text-tx-muted text-[10px] font-bold uppercase tracking-[0.2em] mb-8 leading-relaxed">
+                  COMPLETE THE SECURITY CHECK AND PAYMENT IN THE PRAVA SECURE WINDOW.
                 </p>
                 
                 <div className="flex flex-col gap-4 w-full max-w-xs">
                   <button
                     onClick={() => window.open(iframeUrl, 'PravaCheckout', 'width=500,height=700')}
-                    className="w-full bg-p text-white font-semibold py-3 rounded-xl hover:bg-p-h transition-all shadow-md"
+                    className="w-full bg-p text-white px-8 py-4 text-[10px] font-bold uppercase tracking-widest border border-p hover:bg-p-h transition-colors shadow-[0_0_20px_rgba(212,121,58,0.2)]"
                   >
-                    Open Secure Window
+                    OPEN SECURE WINDOW
                   </button>
                   <button
                     onClick={finalizeInternalCheckout}
-                    className="w-full bg-bg-soft text-tx-muted font-medium py-3 rounded-xl hover:bg-bg transition-all border border-border text-xs"
+                    className="w-full bg-bg text-tx-muted px-8 py-4 text-[10px] font-bold uppercase tracking-widest border border-border hover:border-tx/30 hover:text-tx transition-colors"
                   >
-                    🚀 Skip (Hackathon Demo)
+                    🚀 SKIP (HACKATHON DEMO)
                   </button>
                 </div>
                 
@@ -198,40 +198,40 @@ export function PaymentModal({
                     <img 
                       key={item.id}
                       src={item.product.imageUrl} 
-                      className="w-16 h-16 rounded-full border-2 border-white object-cover shadow-sm"
+                      className="w-16 h-16 rounded-none border border-p/50 object-cover shadow-sm bg-bg-surface -ml-2 first:ml-0"
                       alt={item.product.title}
                     />
                   ))}
                   {items.length > 3 && (
-                    <div className="w-16 h-16 rounded-full border-2 border-white bg-bg-soft flex items-center justify-center text-xs font-bold text-tx-muted shadow-sm z-10">
+                    <div className="w-16 h-16 border border-border bg-bg flex items-center justify-center text-[10px] font-bold text-tx shadow-sm z-10 -ml-2">
                       +{items.length - 3}
                     </div>
                   )}
                 </div>
                 
-                <h3 className="font-semibold text-center text-sm text-tx-muted mb-2">
-                  {items.length} {items.length === 1 ? 'item' : 'items'} in your Grab Sheet
+                <h3 className="font-bold text-[10px] uppercase tracking-[0.2em] text-tx-muted mb-2">
+                  {items.length} {items.length === 1 ? 'ITEM' : 'ITEMS'} IN YOUR GRAB SHEET
                 </h3>
-                <p className="text-4xl font-bold mb-8 text-tx">₹{totalPrice.toLocaleString('en-IN')}</p>
+                <p className="font-black text-4xl uppercase tracking-tighter mb-8 text-tx">₹{totalPrice.toLocaleString('en-IN')}</p>
                 
                 <button 
                   onClick={handlePay}
                   disabled={loading}
-                  className="w-full relative overflow-hidden group flex justify-center items-center gap-2 bg-p text-white font-bold py-4 rounded-xl hover:bg-p-h transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                  className="w-full relative overflow-hidden group flex justify-center items-center gap-3 bg-p text-white font-bold text-[10px] uppercase tracking-widest py-5 border border-p hover:bg-p-h transition-all shadow-[0_0_20px_rgba(212,121,58,0.2)] disabled:opacity-50"
                 >
                   {loading ? (
-                    <Loader2 className="animate-spin w-5 h-5" />
+                    <Loader2 className="animate-spin w-4 h-4" />
                   ) : (
                     <>
-                      <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                      <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                       <span className="relative z-10 flex items-center gap-2">
-                        <ShoppingBag className="w-5 h-5" /> Checkout & Pay
+                        <ShoppingBag className="w-4 h-4" /> CHECKOUT & PAY
                       </span>
                     </>
                   )}
                 </button>
-                <p className="text-[10px] text-tx-muted mt-4 uppercase tracking-widest flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" /> Secure One-Time Prava Token
+                <p className="text-[9px] text-p/80 mt-4 uppercase tracking-[0.2em] font-bold flex items-center gap-1.5">
+                  <ShieldCheck className="w-3 h-3" /> SECURE ONE-TIME PRAVA TOKEN
                 </p>
               </motion.div>
             ) : (
@@ -246,12 +246,14 @@ export function PaymentModal({
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", bounce: 0.5 }}
                 >
-                  <CheckCircle2 className="w-20 h-20 text-green-500 mb-6 drop-shadow-md" />
+                  <CheckCircle2 className="w-16 h-16 text-p mb-6 drop-shadow-md" />
                 </motion.div>
-                <h3 className="text-2xl font-bold mb-3 text-tx">Checkout Successful!</h3>
-                <p className="text-tx-muted">Items securely added to your digital wardrobe.</p>
-                <p className="text-sm font-medium text-p mt-6 flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Wardrobe...
+                <h3 className="font-black text-2xl uppercase tracking-tighter mb-3 text-tx">CHECKOUT SUCCESSFUL</h3>
+                <p className="text-tx-muted text-[10px] font-bold uppercase tracking-[0.2em] leading-relaxed max-w-xs">
+                  ITEMS SECURELY ADDED TO YOUR DIGITAL WARDROBE.
+                </p>
+                <p className="text-[9px] font-bold text-p mt-8 flex items-center gap-2 uppercase tracking-[0.2em]">
+                  <Loader2 className="w-3 h-3 animate-spin" /> REDIRECTING TO WARDROBE...
                 </p>
               </motion.div>
             )}

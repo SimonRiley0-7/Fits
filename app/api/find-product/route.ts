@@ -34,8 +34,8 @@ export async function POST(req: Request) {
 
     // If Iris passes free-form keywords (for missing piece), use them directly
     if (keywords && !category) {
-      // Try to fetch user's gender from their Style DNA profile — default to "Men" if not set
-      let genderPrefix = "Men's "; // safe default
+      // Try to fetch user's gender from their Style DNA profile — default to "" if not set
+      let genderPrefix = ""; 
       try {
         const userId = await getOrCreateUser();
         const { data: user } = await supabaseAdmin.from("users").select("metadata").eq("id", userId).single();
@@ -47,7 +47,8 @@ export async function POST(req: Request) {
 
       // Sharp, gender-specific query targeting Indian fashion retailers
       const budgetQuery = budget ? `under ${budget} rupees` : "";
-      const searchQuery = `${genderPrefix}${keywords} ${budgetQuery} buy online myntra ajio`.trim();
+      const genderSuffix = genderPrefix ? `for ${genderPrefix.replace("'s ", "")}` : "";
+      const searchQuery = `${genderPrefix}${keywords} ${genderSuffix} ${budgetQuery} buy online myntra ajio`.trim();
       console.log(`[FIND-PRODUCT] Missing piece search: "${searchQuery}"`);
 
       const res = await fetch("https://google.serper.dev/shopping", {
@@ -103,7 +104,8 @@ export async function POST(req: Request) {
 
     // Clean Google Shopping query: exactly 5-8 powerful words
     const budgetQuery = budget ? `under ${budget} rupees` : "";
-    const query = `${gender && gender !== 'Unisex' ? gender + "'s" : ""} ${pattern || ""} ${color || ""} ${finalStyle} ${distinctive_feature || ""} ${category} ${sizeQuery} ${budgetQuery}`.replace(/\s+/g, ' ').trim();
+    const genderSuffix = gender && gender !== 'Unisex' ? `for ${gender}` : "";
+    const query = `${gender && gender !== 'Unisex' ? gender + "'s" : ""} ${pattern || ""} ${color || ""} ${finalStyle} ${distinctive_feature || ""} ${category} ${sizeQuery} ${genderSuffix} ${budgetQuery}`.replace(/\s+/g, ' ').trim();
     
     // We'll use Serper Shopping API
     const res = await fetch("https://google.serper.dev/shopping", {

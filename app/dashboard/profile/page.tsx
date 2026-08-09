@@ -15,9 +15,9 @@ export default async function ProfilePage() {
 
   const metadata = user?.metadata || {};
   const styleDna = metadata.style_dna || {
-    gender: "Men",
-    topSize: "L",
-    bottomSize: "32",
+    gender: "Unisex",
+    topSize: "M",
+    bottomSize: "30",
     fitPreference: "Regular",
     vibe: "Minimalist"
   };
