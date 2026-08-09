@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bg: var(--bg);
+  --color-bg-surface: var(--bg-surface);
+  --color-border: var(--border);
+  
+  --color-tx: var(--tx);
+  --color-tx-muted: var(--tx-muted);
+  
+  --color-p: var(--p);
+  --color-p-h: var(--p-h);
+  --color-success: var(--success);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-marquee: marquee 25s linear infinite;
+  
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
   }
 }
 
+:root {
+  /* Premium Light Theme */
+  --bg: #FAFAFA;          /* Crisp Alabaster */
+  --bg-surface: #F4F2EE;  /* Warm Paper */
+  --border: #E6E2DB;      /* Soft Taupe */
+  
+  /* Text Colors */
+  --tx: #1A1612;          /* Deep Charcoal */
+  --tx-muted: #8C7B6B;    /* Warm Stone */
+  
+  /* Accents */
+  --p: #D4793A;           /* Burnt Amber */
+  --p-h: #E58643;
+  --success: #5E8A65;
+}
+
+.dark {
+  /* Premium Soft Dark Theme */
+  --bg: #0C0A0A;          /* Very Deep Warm Charcoal */
+  --bg-surface: #141212;  /* Slightly lighter surface */
+  --border: #262222;      /* Soft subtle border */
+  
+  /* Text Colors */
+  --tx: #F5F5F5;          /* Soft White */
+  --tx-muted: #9E9595;    /* Warm Gray */
+  
+  /* Accents */
+  --p: #D4793A;
+  --p-h: #E58643;
+  --success: #5E8A65;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--tx);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  /* ── Typography ── */
+  .t-display   { @apply font-display text-5xl md:text-7xl font-bold tracking-tight text-tx leading-none; }
+  .t-h1        { @apply font-display text-4xl md:text-5xl font-bold tracking-tight text-tx; }
+  .t-h2        { @apply font-display text-3xl md:text-4xl font-bold tracking-tight text-tx; }
+  .t-h3        { @apply font-display text-2xl font-bold tracking-tight text-tx; }
+  .t-body      { @apply font-body text-base md:text-lg font-normal text-tx-muted leading-relaxed; }
+  .t-small     { @apply font-body text-sm font-medium text-tx-muted; }
+  .t-label     { @apply font-body text-xs font-bold uppercase tracking-widest text-tx-muted mb-2 block; }
+
+  /* ── Buttons (Smooth & Pill-shaped) ── */
+  .btn         { @apply inline-flex items-center justify-center gap-2 font-body font-medium transition-all duration-200 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]; }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 font-body font-medium transition-all duration-200 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] px-8 py-4 text-sm bg-p text-white hover:bg-p-h shadow-sm rounded-full; }
+  .btn-outline { @apply inline-flex items-center justify-center gap-2 font-body font-medium transition-all duration-200 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] px-8 py-4 text-sm border border-border hover:border-tx hover:text-tx rounded-full; }
+  .btn-ghost   { @apply inline-flex items-center justify-center gap-2 font-body font-medium transition-all duration-200 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] px-4 py-2 text-sm text-tx hover:text-p rounded-full; }
+  .btn-pill    { @apply inline-flex items-center justify-center gap-2 font-body font-medium transition-all duration-200 focus-visible:outline-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] px-8 py-4 text-sm bg-p text-white hover:bg-p-h shadow-sm rounded-full; }
+
+  /* ── Layout ── */
+  .wrap        { @apply max-w-[1400px] mx-auto px-6 md:px-12; }
+  .section     { @apply py-24 md:py-32; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tx-muted);
 }
